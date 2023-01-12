@@ -43,6 +43,10 @@ $routes->group("users", ["namespace" => "App\Controllers"], function ($routes) {
 $routes->group("timesheet", ["namespace" => "App\Controllers"], function ($routes) {
 	$routes->get("/", "Timesheet::index");
 });
+$routes->group("login", ["namespace" => "App\Controllers"], function ($routes) {
+	$routes->get("/", "Login::index");
+	$routes->get("login", "Login::login");
+});
 
 /*
  * --------------------------------------------------------------------
