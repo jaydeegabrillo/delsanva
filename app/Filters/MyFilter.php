@@ -16,7 +16,7 @@ class MyFilter implements FilterInterface
         if(!isset($logged_in)){
             if($login_uri[0] != '/login'){
                 if($login_uri[0] != '/login/login'){
-                    return redirect()->to(base_url());
+                    return redirect()->to(base_url('/login'));
                 }
             }
         }else{

@@ -40,6 +40,9 @@ $routes->group("users", ["namespace" => "App\Controllers"], function ($routes) {
 	$routes->get("/", "Users::index");
     $routes->get("users-datatable", "Users::users_datatable");
 });
+$routes->group("dashboard", ["namespace" => "App\Controllers"], function ($routes) {
+    $routes->get("log", "Dashboard::log");
+});
 $routes->group("timesheet", ["namespace" => "App\Controllers"], function ($routes) {
 	$routes->get("/", "Timesheet::index");
 });
