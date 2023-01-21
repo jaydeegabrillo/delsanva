@@ -18,9 +18,11 @@ class Dashboard extends BaseController
         $data['name'] = $this->session->get('name');
         $data['clock_status'] = $this->dashboardModel->get_clock_status($this->session->get('user_id'));
         $script['js_scripts'] = array();
+        $script['css_scripts'] = array();
         array_push($script['js_scripts'], '/pages/dashboard/dashboard.js');
+        array_push($script['css_scripts'], '/pages/dashboard/dashboard.css');
         
-        echo view('layout/header');
+        echo view('layout/header', $script);
         echo view('layout/sidebar', $data);
         echo view('pages/dashboard/index');
         echo view('layout/footer', $script);
@@ -33,11 +35,14 @@ class Dashboard extends BaseController
         $data = array(
             'user_id' => $this->session->get('user_id'),
             'date' => date('Y-m-d'),
+            'clock_in' => date('Y-m-d h:i:s'),
             'deleted' => 0,
         );
-
-        if(!$check_status){
-            $data['clock_in'] = date('Y-m-d h:i:s');
+        
+        if(isset($check_status)){
+            if($check_status == 'in'){
+                $data['clock_in'] = '';
+            }
         }
 
         $result = $this->dashboardModel->log($data);

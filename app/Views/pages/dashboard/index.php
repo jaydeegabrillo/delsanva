@@ -21,39 +21,25 @@
                     <div class="col-lg-6 col-6">
                         <div class="small-box <?= ($clock_status == 'in') ? 'bg-danger' : 'bg-success' ; ?> clock_status">
                             <div class="inner">
-                                <h3>150</h3>
-                                <p><?= ($clock_status == 'in') ? 'Clock Out' : 'Clock In'; ?></p>
+                                <h3><?= ($clock_status == 'in') ? 'Clock Out' : 'Clock In'; ?></h3>
+                                <p class="attendance_status">
+                                    <?php if(!$clock_status){ ?>
+                                        You are not clocked in yet
+                                    <?php }else{ ?>
+                                        <?php if($clock_status == 'in'){ ?>
+                                            You are now clocked in
+                                        <?php } else { ?>
+                                            Today's Attendance Completed
+                                        <?php } ?>
+                                    <?php } ?>
+                                </p>
                             </div>
                             <div class="icon clock_in">
-                                <i class="ion ion-bag"></i>
+                                <?php if(!$clock_status || $clock_status == 'in'){ ?>
+                                    <i class="ion ion-clock"></i>
+                                <?php } ?>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3>44</h3>
-                                <p>User Registrations</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-person-add"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3>65</h3>
-                                <p>Unique Visitors</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="#" class="small-box-footer"></a>
                         </div>
                     </div>
                 </div>
