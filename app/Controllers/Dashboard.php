@@ -15,17 +15,14 @@ class Dashboard extends BaseController
     public function index()
     {
         $data['title'] = 'Dashboard';
-        $data['name'] = $this->session->get('name');
         $data['clock_status'] = $this->dashboardModel->get_clock_status($this->session->get('user_id'));
         $script['js_scripts'] = array();
         $script['css_scripts'] = array();
+        $path = 'pages/dashboard/index';
         array_push($script['js_scripts'], '/pages/dashboard/dashboard.js');
         array_push($script['css_scripts'], '/pages/dashboard/dashboard.css');
         
-        echo view('layout/header', $script);
-        echo view('layout/sidebar', $data);
-        echo view('pages/dashboard/index');
-        echo view('layout/footer', $script);
+        $this->load_view($data, $script, $path);
     }
 
     public function log(){

@@ -9,11 +9,10 @@ class Users extends BaseController
     {
         $data['title'] = 'Users';
         $script['js_scripts'] = array();
+        $path = 'pages/users/index';
         array_push($script['js_scripts'], '/pages/users/users.js');
-        echo view('layout/header');
-        echo view('layout/sidebar', $data);
-        echo view('pages/users/index');
-        echo view('layout/footer',$script);
+        
+        $this->load_view($data,$script,$path);
     }
 
     public function users_datatable(){
