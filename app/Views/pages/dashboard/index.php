@@ -42,6 +42,18 @@
                             <a href="#" class="small-box-footer"></a>
                         </div>
                     </div>
+                    <div class="col-lg-6 col-6">
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3>Logs</h3>
+                                <p>You have 1 missing log</p>
+                            </div>
+                            <div class="icon clock_in">
+                                <i class="ion ion-clock"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

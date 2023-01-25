@@ -33,8 +33,9 @@
                                                         <tr>
                                                             <th>ID</th>
                                                             <th>Name</th>
-                                                            <th>Email</th>
-                                                            <th>Action</th>
+                                                            <th>Clock In</th>
+                                                            <th>Clock Out</th>
+                                                            <th>Options</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -43,8 +44,9 @@
                                                         <tr>
                                                             <th>ID</th>
                                                             <th>Name</th>
-                                                            <th>Email</th>
-                                                            <th>Action</th>
+                                                            <th>Clock In</th>
+                                                            <th>Clock Out</th>
+                                                            <th>Options</th>
                                                         </tr>
                                                     </tfooter>
                                                 </table>

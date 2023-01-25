@@ -1,15 +1,36 @@
 <?php
 
 namespace App\Controllers;
+use \Hermawan\DataTables\DataTable;
 
 class Timesheet extends BaseController
 {
     public function index()
     {
         $data['title'] = 'Timesheet';
-        $script = array();
+        $script['js_scripts'] = array();
+        array_push($script['js_scripts'], '/pages/timesheet/timesheet.js');
         $path = 'pages/timesheet/index';
         
         $this->load_view($data,$script,$path);
+    }
+
+    public function timesheet_datatable(){
+        $db = db_connect();
+        $builder = $db->table('attendance a');
+        $builder->select("a.id, CONCAT(u.first_name, ' ', u.last_name) as full_name, clock_in, clock_out");
+        $builder->join('users u', 'a.user_id = u.id');
+
+        return DataTable::of($builder)
+        ->edit('clock_in', function($row){
+            return date('H:i A', strtotime($row->clock_in));
+        })
+        ->edit('clock_out', function($row){
+            return date('H:i A', strtotime($row->clock_out));
+        })
+        ->add('action', function($row){
+            return '';
+        })
+        ->toJson();
     }
 }
