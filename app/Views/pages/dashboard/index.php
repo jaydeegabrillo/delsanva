@@ -46,10 +46,7 @@
                         <div class="small-box bg-warning">
                             <div class="inner">
                                 <h3>Logs</h3>
-                                <p>You have 1 missing log</p>
-                            </div>
-                            <div class="icon clock_in">
-                                <i class="ion ion-clock"></i>
+                                <p>You have <?= $missing_logs ?> missing log</p>
                             </div>
                             <a href="#" class="small-box-footer"></a>
                         </div>

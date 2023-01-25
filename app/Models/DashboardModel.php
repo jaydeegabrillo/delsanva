@@ -38,4 +38,18 @@ class DashboardModel extends Model
         }
         return $res;
     }
+
+    public function get_attendance($user_id){
+        $db = \Config\Database::connect();
+
+        $attendance = $db->table('attendance')->where('user_id', $user_id)->get()->getResult();
+        $ctr = 0;
+        foreach ($attendance as $key => $value) {
+            if($value->clock_in == '0000-00-00 00:00:00' || $value->clock_out == '0000-00-00 00:00:00'){
+                $ctr++;
+            }
+        }
+        
+        return $ctr;
+    }
 }

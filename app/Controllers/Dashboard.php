@@ -14,11 +14,18 @@ class Dashboard extends BaseController
 
     public function index()
     {
-        $data['title'] = 'Dashboard';
-        $data['clock_status'] = $this->dashboardModel->get_clock_status($this->session->get('user_id'));
+        $id = $this->session->get('user_id');
+
+        $data = array(
+            'title' => 'Dashboard',
+            'clock_status' => $this->dashboardModel->get_clock_status($id),
+            'missing_logs' => $this->dashboardModel->get_attendance($id),
+        );
+
         $script['js_scripts'] = array();
         $script['css_scripts'] = array();
         $path = 'pages/dashboard/index';
+        
         array_push($script['js_scripts'], '/pages/dashboard/dashboard.js');
         array_push($script['css_scripts'], '/pages/dashboard/dashboard.css');
         
