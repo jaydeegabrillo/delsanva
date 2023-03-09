@@ -22,6 +22,9 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Timesheet</h3>
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-success" name="button" data-toggle="modal" data-target="#add_user_modal">Timesheet PDF</button>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <div id="timesheet" class="dataTables_wrapper dt-bootstrap4">
@@ -35,6 +38,7 @@
                                                             <th>Name</th>
                                                             <th>Clock In</th>
                                                             <th>Clock Out</th>
+                                                            <th>Date</th>
                                                             <th>Options</th>
                                                         </tr>
                                                     </thead>
@@ -46,6 +50,7 @@
                                                             <th>Name</th>
                                                             <th>Clock In</th>
                                                             <th>Clock Out</th>
+                                                            <th>Date</th>
                                                             <th>Options</th>
                                                         </tr>
                                                     </tfooter>

@@ -22,7 +22,10 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">List of Staff</h3>
-                            </div>
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-success" name="button" data-toggle="modal" data-target="#add_user_modal">Add Staff</button>
+                                </div>
+                            </div#>
                             <div class="card-body">
                                 <div id="users" class="dataTables_wrapper dt-bootstrap4">
                                     <div class="row">
