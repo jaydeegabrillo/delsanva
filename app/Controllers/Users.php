@@ -17,8 +17,8 @@ class Users extends BaseController
         $script['js_scripts'] = array();
         // $path = 'pages/users/index';
         $path = array(
-            'index' => 'pages/users/index',
-            'modal' => 'pages/users/modal'
+            'pages/users/index',
+            'pages/users/modal'
         );
         array_push($script['js_scripts'], '/pages/users/users.js');
 

@@ -25,7 +25,7 @@ class Dashboard extends BaseController
         $script['js_scripts'] = array();
         $script['css_scripts'] = array();
         $path = array(
-            'index' => 'pages/dashboard/index'
+            'pages/dashboard/index'
         );
 
         array_push($script['js_scripts'], '/pages/dashboard/dashboard.js');

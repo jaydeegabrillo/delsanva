@@ -1,5 +1,7 @@
 $(document).ready(function(){
+    const slug = 'timesheet';
     var timesheet_table = $("#timesheet_table")
+    var timesheet_form = $('#timesheet_pdf_form');
 
     timesheet_table.DataTable({
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -22,5 +24,12 @@ $(document).ready(function(){
                 );
             }
         }
+    });
+
+    timesheet_form.submit(function(e){
+        e.preventDefault();
+        var data = $(this).serialize();
+        var url = slug + "/timesheet_pdf?" + data;
+        window.open(url, '_blank');
     });
 });

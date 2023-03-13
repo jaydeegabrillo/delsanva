@@ -47,6 +47,7 @@ $routes->group("dashboard", ["namespace" => "App\Controllers"], function ($route
 $routes->group("timesheet", ["namespace" => "App\Controllers"], function ($routes) {
 	$routes->get("/", "Timesheet::index");
 	$routes->get("timesheet-datatable", "Timesheet::timesheet_datatable");
+    $routes->get("timesheet_pdf", "Timesheet::timesheet_pdf");
 });
 $routes->group("login", ["namespace" => "App\Controllers"], function ($routes) {
 	$routes->get("/", "Login::index");
