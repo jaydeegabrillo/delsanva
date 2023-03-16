@@ -21,7 +21,6 @@ class Timesheet extends BaseController
         $data['title'] = 'Timesheet';
         $script['js_scripts'] = array();
         array_push($script['js_scripts'], '/pages/timesheet/timesheet.js');
-        array_push($script['js_scripts'], '/pages/timesheet/timesheet.js');
 
         $path = array(
             'pages/timesheet/index',
