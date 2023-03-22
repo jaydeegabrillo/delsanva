@@ -39,17 +39,12 @@ class Dashboard extends BaseController
         $check_status = $this->dashboardModel->get_clock_status($this->session->get('user_id'));
 
         $data = array(
+            'id' => $check_status['id'],
             'user_id' => $this->session->get('user_id'),
             'date' => date('Y-m-d'),
             'clock_in' => date('Y-m-d h:i:s'),
             'deleted' => 0,
         );
-
-        if(isset($check_status)){
-            if($check_status == 'in'){
-                $data['clock_in'] = '';
-            }
-        }
 
         $result = $this->dashboardModel->log($data);
 

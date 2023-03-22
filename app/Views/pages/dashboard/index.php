@@ -19,24 +19,20 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-6 col-6">
-                        <div class="small-box <?= ($clock_status == 'in') ? 'bg-danger' : 'bg-success' ; ?> clock_status">
+                        <div class="small-box <?= ($clock_status['status'] == 'in') ? 'bg-danger' : 'bg-success' ; ?> clock_status">
                             <div class="inner">
-                                <h3><?= ($clock_status == 'in') ? 'Clock Out' : 'Clock In'; ?></h3>
+                                <h3 class="clock_stat"><?= ($clock_status['status'] == 'in') ? 'Clock Out' : 'Clock In'; ?></h3>
                                 <p class="attendance_status">
-                                    <?php if(!$clock_status){ ?>
+                                    <?php if($clock_status['status'] == 'in'){ ?>
+                                        Clocked in at <?= date('h:i a', strtotime($clock_status['time'])) ?>
+                                    <?php } else { ?>
                                         You are not clocked in yet
-                                    <?php }else{ ?>
-                                        <?php if($clock_status == 'in'){ ?>
-                                            You are now clocked in
-                                        <?php } else { ?>
-                                            Today's Attendance Completed
-                                        <?php } ?>
                                     <?php } ?>
                                 </p>
                             </div>
-                            <div class="icon clock_in">
+                            <div class="icon clock_in" style="cursor:pointer">
+                                <i class="ion ion-clock"></i>
                                 <?php if(!$clock_status || $clock_status == 'in'){ ?>
-                                    <i class="ion ion-clock"></i>
                                 <?php } ?>
                             </div>
                             <a href="#" class="small-box-footer"></a>
