@@ -10,6 +10,7 @@
             <form class="" id="add_user_form" action="javascript:(0);">
                 <div class="modal-body">
                     <div class="form-group">
+                        <input type="hidden" name="id" class="id" value="">
                         <label for="first_name">First Name</label>
                         <input type="text" name="first_name" class="form-control" value="">
                         <label for="last_name">Last Name</label>
