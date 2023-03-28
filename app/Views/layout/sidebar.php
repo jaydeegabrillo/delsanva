@@ -9,7 +9,8 @@
 
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                <i class="fas fa-user" style="color: white; font-size: 30px;"></i>
+                <!-- <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> -->
             </div>
             <div class="info">
                 <a href="#" class="d-block"><?= $name ?></a>
@@ -32,19 +33,19 @@
 
                 <li class="nav-item">
                     <a href="<?= base_url() ?>" class="nav-link <?= ($title == 'Dashboard') ? 'active' : '' ; ?>">
-                        <i class="nav-icon far fa-image"></i> <p> Dashboard </p>
+                        <i class="nav-icon fas fa-tachometer"></i> <p> Dashboard </p>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="<?= base_url('users') ?>" class="nav-link <?= ($title == 'Users') ? 'active' : ''; ?>">
-                        <i class="nav-icon far fa-image"></i> <p> Staff </p>
+                        <i class="nav-icon fas fa-user"></i> <p> Staff </p>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="<?= base_url('timesheet') ?>" class="nav-link <?= ($title == 'Timesheet') ? 'active' : ''; ?>">
-                        <i class="nav-icon far fa-image"></i> <p> Timesheet </p>
+                        <i class="nav-icon fa fa-hourglass"></i> <p> Timesheet </p>
                     </a>
                 </li>
             </ul>
@@ -68,11 +69,11 @@
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="index3.html" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Contact</a>
+        </ul>
+
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url('login/logout') ?>">Logout <i class="fa fa-sign-out"></i></a>
             </li>
         </ul>
     </nav>

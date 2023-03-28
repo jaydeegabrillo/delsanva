@@ -13,7 +13,7 @@ class Login extends BaseController
     }
 
     public function index()
-    {   
+    {
         $data['title'] = 'Login';
 
         echo view('layout/login_header');
@@ -24,15 +24,15 @@ class Login extends BaseController
     public function login(){
         $loginModel = new \App\Models\LoginModel;
         $encrypter = \Config\Services::encrypter();
-        
+
         $cipher = "AES-256-CBC";
         $secret = "DelsanVA";
         $option = 0;
 
         $iv = str_repeat("0", openssl_cipher_iv_length($cipher));
-        
-        if($this->request->getMethod() == 'get'){     
-            $password = $this->request->getVar('password');       
+
+        if($this->request->getMethod() == 'get'){
+            $password = $this->request->getVar('password');
             $data = array(
                 'email' => $this->request->getVar('email'),
                 'password' => openssl_encrypt($password, $cipher, $secret, $option, $iv),
@@ -50,11 +50,16 @@ class Login extends BaseController
             $this->session->set($data);
 
             // $check = $loginModel->user_daily_log($data['user_id']);
-            
+
             echo "true";
         }else{
             echo "false";
         }
-        
+
+    }
+
+    public function logout(){
+        $this->session->destroy();
+        return redirect()->to(base_url());
     }
 }

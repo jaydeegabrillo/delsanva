@@ -26,12 +26,14 @@ abstract class BaseController extends Controller
         // E.g.: $this->session = \Config\Services::session();
     }
 
-    public function load_view($data = array(), $script = array(), $path = ''){
+    public function load_view($data = array(), $script = array(), $paths = ''){
         $data['name'] = $this->session->get('name');
 
         echo view('layout/header', $script);
         echo view('layout/sidebar', $data);
-        echo view($path);
+        foreach ($paths as $path) {
+            echo view($path);
+        }
         echo view('layout/footer', $script);
     }
 }

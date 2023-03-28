@@ -1,4 +1,4 @@
-    
+
         </div>
         <script src="assets/jquery/jquery.min.js"></script>
 
@@ -29,7 +29,8 @@
         <script src="assets/js/datatables/jquery.dataTables.min.js"></script>
         <script src="assets/js/datatables/dataTables.bootstrap4.min.js"></script>
         <script src="assets/js/datatables/dataTables.responsive.min.js"></script>
-
+        <script src="assets/js/sweetalert2.all.min.js"></script>
+        
         <!-- <script src="https://adminlte.io/themes/v3/dist/js/demo.js"></script> -->
 
         <!-- <script src="https://adminlte.io/themes/v3/dist/js/pages/dashboard.js"></script> -->
