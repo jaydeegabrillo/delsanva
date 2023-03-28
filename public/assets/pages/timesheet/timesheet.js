@@ -23,4 +23,62 @@ $(document).ready(function(){
             }
         }
     });
+
+    timesheet_form.submit(function(e){
+        e.preventDefault();
+        var data = $(this).serialize();
+        var url = slug + "/timesheet_pdf?" + data;
+        window.open(url, '_blank');
+    });
+
+    $(document).on('click', '.edit_attendance', function(e){
+        e.preventDefault();
+
+        $('input[name="clock_in"]').val($(this).data('in'));
+        $('input[name="clock_out"]').val($(this).data('out'));
+        $('input[name="id"]').val($(this).data('id'));
+    });
+
+    $(document).on('hidden.bs.modal', '#edit_attendance', function(e){
+        $('input[name="clock_in"]').val('');
+        $('input[name="clock_out"]').val('');
+        $('input[name="id"]').val('');
+    })
+
+    $(document).on('submit', '#update_attendance_form', function(e){
+        e.preventDefault()
+
+        var self = $(this);
+        var data = self.serialize();
+
+        $.ajax({
+            url: 'timesheet/update_log/',
+            type: 'get',
+            data: data,
+            success: function (result) {
+
+                var success = JSON.parse(result).success;
+                if (success) {
+                    $('#edit_log_modal').toggle()
+                    $('.modal-backdrop').remove();
+
+                    Swal.fire(
+                        'Update',
+                        'Log has been updated',
+                    )
+                    dashboard_table.ajax.reload()
+                    self[0].reset();
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    })
+
+    $(document).on('click', '.delete_attendance', function(e){
+        e.preventDefault()
+
+
+    })
 });
