@@ -9,11 +9,13 @@ class Timesheet extends BaseController
     private $timesheet_model;
     private $_user;
     protected $session;
+    protected $db;
 
     function __construct(){
         $this->session = \Config\Services::session();
         $this->timesheet_model = new \App\Models\TimesheetModel;
         $this->_user = $this->session->get();
+        $this->db = \Config\Database::connect();
     }
 
     public function index()
@@ -32,17 +34,15 @@ class Timesheet extends BaseController
 
     public function update_log(){
         $id = $this->request->getVar('id');
-        $in = $this->request->getVar('in');
-        $out = $this->request->getVar('out');
+        $in = $this->request->getVar('clock_in');
+        $out = $this->request->getVar('clock_out');
 
-        $data['set'] = array(
-            'clock_in' => $in,
-            'clock_out' => $out,
+        $data = array(
+            'clock_in' => ($in) ? date('c', strtotime($in)) : '0000-00-00 00:00:00',
+            'clock_out' => ($out) ? date('c', strtotime($out)) : '0000-00-00 00:00:00',
         );
 
-        $data['where'] = array( 'id' => $id );
-
-        $update = $this->db->update('')
+        $update = $this->db->table('attendance')->where('id', $id)->update($data);
 
         if($update){
             echo json_encode(array('success' => true));

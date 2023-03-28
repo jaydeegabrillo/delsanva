@@ -52,24 +52,25 @@ $(document).ready(function(){
 
         var self = $(this);
         var data = self.serialize();
-
+        
         $.ajax({
             url: 'timesheet/update_log/',
             type: 'get',
             data: data,
             success: function (result) {
+                console.log(result);
 
                 var success = JSON.parse(result).success;
                 if (success) {
-                    $('#edit_log_modal').toggle()
+                    $('#edit_attendance').toggle()
                     $('.modal-backdrop').remove();
 
                     Swal.fire(
                         'Update',
                         'Log has been updated',
                     )
-                    dashboard_table.ajax.reload()
-                    self[0].reset();
+
+                    timesheet_table.DataTable().ajax.reload()
                 }
             },
             error: function (err) {
