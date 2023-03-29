@@ -84,12 +84,14 @@ class Timesheet extends BaseController
 
         $id = $this->session->get('user_id');
         $timesheet = $this->timesheet_model->timesheet_pdf($id,$posted)->get()->getResult();
+        
         $ctr = 0;
         $data['timesheet'][$ctr] = array();
 
         foreach ($timesheet as $key => $value) {
             $data['timesheet'][$ctr] = array();
             array_push($data['timesheet'][$ctr], $value);
+            $ctr++;
         }
 
         $dompdf = new Dompdf();

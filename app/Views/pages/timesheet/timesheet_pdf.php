@@ -61,21 +61,21 @@ $array_count = count($timesheet);
                     <tr class="timesheet_data <?= ($counter % 2 == 0) ? 'evenrow' : 'oddrow' ?>">
                         <td><?= date('F d, Y' ,strtotime($value->date))?></td>
                         <td><?= ($value->clock_in == NULL) ? '-' : date('h:i a', strtotime($value->clock_in)) ?></td>
-                        <td><?= ($value->clock_out == NULL) ? '-' : date('h:i a', strtotime($value->clock_out)) ?></td>
+                        <td><?= ($value->clock_out == NULL || $value->clock_out == '0000-00-00 00:00:00') ? '-' : date('h:i a', strtotime($value->clock_out)) ?></td>
                         <td>
                             <?php
                             if($value->clock_in != NULL && $value->clock_out != NULL){
                                 $start = strtotime($value->clock_in);
                                 $end = strtotime($value->clock_out);
-
-                                $hours = date('H:i:s', $end-$start);
+                                
+                                // $hours = date('H:i:s', $end-$start);
                                 $duration = $end-$start;
-                                $hours = (int)($duration/60/60);
-                                $minutes = (int)($duration/60)-$hours*60;
+                                $hours = ($duration <= 0 ) ? '0' : (int)($duration/60/60);
+                                $minutes = ($duration <= 0 ) ? '0' : (int)($duration/60)-$hours*60;
                                 $hours = ($hours <= 9) ? '0'.$hours : $hours;
                                 $minutes = ($minutes <= 9) ? '0'.$minutes : $minutes;
                                 $rendered = date('H:i', strtotime($rendered."+$hours hours +$minutes minutes"));
-
+                                
                                 echo $hours." hrs ".$minutes." mins";
                             }else{
                                 echo "-";
