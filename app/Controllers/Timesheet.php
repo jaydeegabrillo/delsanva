@@ -89,9 +89,7 @@ class Timesheet extends BaseController
         $data['timesheet'][$ctr] = array();
 
         foreach ($timesheet as $key => $value) {
-            $data['timesheet'][$ctr] = array();
             array_push($data['timesheet'][$ctr], $value);
-            $ctr++;
         }
 
         $dompdf = new Dompdf();
