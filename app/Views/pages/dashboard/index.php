@@ -24,7 +24,7 @@
                                 <h3 class="clock_stat"><?= ($clock_status['status'] == 'in') ? 'Clock Out' : 'Clock In'; ?></h3>
                                 <p class="attendance_status">
                                     <?php if($clock_status['status'] == 'in'){ ?>
-                                        Clocked in at <?= date('H:i a', strtotime($clock_status['time'])) ?>
+                                        Clocked in at <?= date('h:i a', strtotime($clock_status['time'])) ?>
                                     <?php } else { ?>
                                         You are not clocked in yet
                                     <?php } ?>

@@ -42,7 +42,7 @@ class Dashboard extends BaseController
             'id' => $check_status['id'],
             'user_id' => $this->session->get('user_id'),
             'date' => date('Y-m-d'),
-            'clock_in' => date('Y-m-d h:i:s'),
+            'clock_in' => date('c'),
             'deleted' => 0,
         );
 
