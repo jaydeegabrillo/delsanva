@@ -37,11 +37,13 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="<?= base_url('users') ?>" class="nav-link <?= ($title == 'Users') ? 'active' : ''; ?>">
-                        <i class="nav-icon fas fa-user"></i> <p> Staff </p>
-                    </a>
-                </li>
+                <?php if($position_id == 1){ ?>
+                    <li class="nav-item">
+                        <a href="<?= base_url('users') ?>" class="nav-link <?= ($title == 'Users') ? 'active' : ''; ?>">
+                            <i class="nav-icon fas fa-user"></i> <p> Staff </p>
+                        </a>
+                    </li>
+                <?php } ?>
 
                 <li class="nav-item">
                     <a href="<?= base_url('timesheet') ?>" class="nav-link <?= ($title == 'Timesheet') ? 'active' : ''; ?>">

@@ -4,3 +4,43 @@
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
 }
+
+.clock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3em;
+  font-family: Arial, sans-serif;
+}
+
+.clock > div {
+  padding: 10px 10px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 1px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  letter-spacing: -1px;
+}
+
+.clock > div:before,
+.clock > div:after {
+  display: inline-block;
+  font-size: 0.7em;
+  line-height: 1;
+  vertical-align: middle;
+  opacity: 0.8;
+}
+
+.clock > div:after {
+    content: ':'
+}
+
+.clock > div:first-child:before,
+.clock > div:nth-child(2):before {
+  content: none;
+}
+
+.clock > div:last-child:after {
+  content: none;
+}

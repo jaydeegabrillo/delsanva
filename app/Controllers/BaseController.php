@@ -28,6 +28,7 @@ abstract class BaseController extends Controller
 
     public function load_view($data = array(), $script = array(), $paths = ''){
         $data['name'] = $this->session->get('name');
+        $data['position_id'] = $this->session->get('position_id');
 
         echo view('layout/header', $script);
         echo view('layout/sidebar', $data);

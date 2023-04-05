@@ -11,22 +11,35 @@ $(document).ready(function(e){
             data: form_data,
             success: function (result) {
                 if (result) {
-                    if($('.clock_status').hasClass('bg-danger')){
-                        $('.clock_status').removeClass('bg-danger')
-                        $('.clock_status').addClass('bg-success')
-                        $('p.attendance_status').html("You are not clocked in yet")
-                        $('h3.clock_stat').html('Clock In');
-                    }else{
-                        var time = formatAMPM(new Date());
-                        console.log(time, 'toym');
-                        $('.clock_status').removeClass('bg-success')
-                        $('.clock_status').addClass('bg-danger')
-                        $('p.attendance_status').html('Clocked in at ' + time)
-                        $('h3.clock_stat').html('Clock Out');
-                    }
-                } else {
-                    $('button.alert').removeClass('hide');
-                    $('button.alert').addClass('show');
+                    var time = formatAMPM(new Date());
+
+                    $('#for_in').removeClass('clock_in');
+                    $('#for_out').addClass('clock_out');
+                    $('p.attendance_status').html('Clocked in at ' + time)
+                    $('p.attendance_out_status').html('You have not clocked out yet')
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    })
+
+    $(document).on('click', '.clock_out', function(e){
+        e.preventDefault();
+
+        var form_data = $(this).serialize()
+
+        $.ajax({
+            type: 'GET',
+            url: 'dashboard/log',
+            data: form_data,
+            success: function (result) {
+                if (result) {
+                    $('#for_out').removeClass('clock_out');
+                    $('#for_in').addClass('clock_in');
+                    $('p.attendance_status').html('You have not clocked in yet')
+                    $('p.attendance_out_status').html('You are clocked out')
                 }
             },
             error: function (err) {
@@ -47,3 +60,18 @@ function formatAMPM(date) {
 
     return strTime;
 }
+
+
+//for clock
+function updateTime() {
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
+
+  document.querySelector('.hours').textContent = hours;
+  document.querySelector('.minutes').textContent = minutes;
+  document.querySelector('.seconds').textContent = seconds;
+}
+
+setInterval(updateTime, 1000);

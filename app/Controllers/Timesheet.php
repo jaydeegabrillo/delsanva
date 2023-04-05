@@ -56,6 +56,9 @@ class Timesheet extends BaseController
         $builder = $db->table('attendance a');
         $builder->select("a.id, CONCAT(u.first_name, ' ', u.last_name) as full_name, clock_in, clock_out, date");
         $builder->join('users u', 'a.user_id = u.id');
+        if($this->session->get('position_id') > 1){
+            $builder->where('user_id', $this->session->get('user_id'));
+        }
         $builder->orderBy('date', 'desc');
 
         return DataTable::of($builder)
@@ -69,10 +72,14 @@ class Timesheet extends BaseController
             return date('M d, Y', strtotime($row->date));
         })
         ->add('action', function($row){
-            $in = ($row->clock_in == '') ? '' : date("H:i", strtotime($row->clock_in));
-            $out = ($row->clock_out == '') ? '' : date("H:i", strtotime($row->clock_out));
+            if($this->session->get('position_id') == 1){
+                $in = ($row->clock_in == '') ? '' : date("H:i", strtotime($row->clock_in));
+                $out = ($row->clock_out == '') ? '' : date("H:i", strtotime($row->clock_out));
 
-            return '<button type="button" class="btn btn-warning btn-sm edit_attendance" data-toggle="modal" data-target="#edit_attendance" data-in="'.$in.'" data-out="'.$out.'" data-id="'.$row->id.'"><i class="fa fa-edit"></i> Edit</button>';
+                return '<button type="button" class="btn btn-warning btn-sm edit_attendance" data-toggle="modal" data-target="#edit_attendance" data-in="'.$in.'" data-out="'.$out.'" data-id="'.$row->id.'"><i class="fa fa-edit"></i> Edit</button>';
+            } else {
+                return '';
+            }
         }, 'last')
         ->toJson();
     }
@@ -84,7 +91,7 @@ class Timesheet extends BaseController
 
         $id = $this->session->get('user_id');
         $timesheet = $this->timesheet_model->timesheet_pdf($id,$posted)->get()->getResult();
-        
+
         $ctr = 0;
         $data['timesheet'][$ctr] = array();
 

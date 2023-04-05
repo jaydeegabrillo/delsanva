@@ -46,6 +46,7 @@ class Login extends BaseController
             $data['user_id'] = $validate['id'];
             $data['name'] = $validate['name'];
             $data['email'] = $validate['email'];
+            $data['position_id'] = $validate['position_id'];
 
             $this->session->set($data);
 
