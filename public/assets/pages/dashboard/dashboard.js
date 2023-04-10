@@ -65,13 +65,15 @@ function formatAMPM(date) {
 //for clock
 function updateTime() {
   const now = new Date();
-  const hours = now.getHours().toString().padStart(2, '0');
-  const minutes = now.getMinutes().toString().padStart(2, '0');
-  const seconds = now.getSeconds().toString().padStart(2, '0');
+  const time = now.toLocaleTimeString([], { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit', hourCycle: 'h12' });
+  const [hours, minutes, seconds] = time.split(/:|\s/);
 
   document.querySelector('.hours').textContent = hours;
   document.querySelector('.minutes').textContent = minutes;
   document.querySelector('.seconds').textContent = seconds;
+
+  const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
+  document.querySelector('.ampm').textContent = ampm;
 }
 
 setInterval(updateTime, 1000);

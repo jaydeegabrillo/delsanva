@@ -33,7 +33,7 @@
 }
 
 .clock > div:after {
-    content: ':'
+    /* content: ':' */
 }
 
 .clock > div:first-child:before,

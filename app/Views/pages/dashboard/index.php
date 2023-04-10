@@ -61,6 +61,7 @@
                                   <div class="hours"></div>
                                   <div class="minutes"></div>
                                   <div class="seconds"></div>
+                                  <div class="ampm"></div>
                                 </div>
                             </div>
                             <a href="#" class="small-box-footer"></a>
