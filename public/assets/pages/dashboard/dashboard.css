@@ -1,8 +1,9 @@
-.clock_status, .clock_in {
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+.clock_status,
+.clock_in {
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 .clock {
@@ -13,18 +14,17 @@
   font-family: Arial, sans-serif;
 }
 
-.clock > div {
+.clock>div {
   padding: 10px 10px;
-  background-color: #333;
-  color: #fff;
+  background-color: #3330;
+  color: #6c757d;
   border-radius: 1px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   text-align: center;
   letter-spacing: -1px;
 }
 
-.clock > div:before,
-.clock > div:after {
+.clock>div:before,
+.clock>div:after {
   display: inline-block;
   font-size: 0.7em;
   line-height: 1;
@@ -32,15 +32,11 @@
   opacity: 0.8;
 }
 
-.clock > div:after {
-    /* content: ':' */
-}
-
-.clock > div:first-child:before,
-.clock > div:nth-child(2):before {
+.clock>div:first-child:before,
+.clock>div:nth-child(2):before {
   content: none;
 }
 
-.clock > div:last-child:after {
+.clock>div:last-child:after {
   content: none;
 }

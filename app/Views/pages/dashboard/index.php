@@ -58,8 +58,8 @@
                         <div class="small-box">
                             <div class="inner">
                                 <div class="clock">
-                                  <div class="hours"></div>
-                                  <div class="minutes"></div>
+                                  <div class="hours"></div>:
+                                  <div class="minutes"></div>:
                                   <div class="seconds"></div>
                                   <div class="ampm"></div>
                                 </div>
