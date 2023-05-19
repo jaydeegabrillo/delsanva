@@ -44,6 +44,7 @@ $routes->group("users", ["namespace" => "App\Controllers"], function ($routes) {
 });
 $routes->group("dashboard", ["namespace" => "App\Controllers"], function ($routes) {
     $routes->get("log", "Dashboard::log");
+    $routes->post("update_password", "Dashboard::update_password");
 });
 $routes->group("timesheet", ["namespace" => "App\Controllers"], function ($routes) {
 	$routes->get("/", "Timesheet::index");
@@ -55,6 +56,8 @@ $routes->group("login", ["namespace" => "App\Controllers"], function ($routes) {
 	$routes->get("/", "Login::index");
 	$routes->get("login", "Login::login");
     $routes->get("logout", "Login::logout");
+    $routes->get("forgot_password", "Login::forgot_password");
+    $routes->get("send_forgot_password", "Login::send_forgot_password");
 });
 
 /*

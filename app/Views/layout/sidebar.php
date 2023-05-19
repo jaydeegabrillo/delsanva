@@ -29,7 +29,7 @@
         </div>
 
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column nav-legacy" data-widget="treeview" role="menu" data-accordion="false">
 
                 <li class="nav-item">
                     <a href="<?= base_url() ?>" class="nav-link <?= ($title == 'Dashboard') ? 'active' : '' ; ?>">
@@ -74,6 +74,9 @@
         </ul>
 
         <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link update_password" href="javascript:void(0)" data-toggle="modal" data-target="#update_password_modal" >Update Password <i class="fa fa-lock"></i></a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('login/logout') ?>">Logout <i class="fa fa-sign-out"></i></a>
             </li>

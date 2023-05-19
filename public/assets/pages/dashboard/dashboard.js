@@ -47,6 +47,35 @@ $(document).ready(function(e){
             }
         });
     })
+
+    $(document).on('submit', '#update_password_form', function(e){
+        e.preventDefault();
+
+        var data = $(this).serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: 'dashboard/update_password',
+            data: data,
+            success: function (result) {
+                var alerts = JSON.parse(result);
+                
+                if (result) {
+                    $('#update_password_modal').modal('toggle');
+                    $('input').val('');
+
+                    Swal.fire(
+                        alerts.header,
+                        alerts.message,
+                        alerts.type
+                    )
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    })
 });
 
 function formatAMPM(date) {

@@ -1,7 +1,7 @@
 <div class="login-box">
     <div class="card card-outline card-primary">
         <div class="card-header text-center">
-            <a href="../../index2.html" class="h1"><b>Delsan</b>VA</a>
+            <a href="<?= base_url() ?>" class="h1"><b>Delsan</b>VA</a>
         </div>
         <div class="card-body">
             <p class="login-box-msg">Sign in to start your session</p>
@@ -21,6 +21,9 @@
                             <span class="fas fa-lock"></span>
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-12"><a href="<?= base_url('login/forgot_password') ?>">Forgot your password?</a></div>
                 </div>
                 <div class="row">
                     <div class="col-8">

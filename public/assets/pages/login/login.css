@@ -9,3 +9,8 @@
 .error_button {
     cursor: none;
 }
+
+.request_response {
+    width: 100%;
+    margin-bottom: 10px;
+}
