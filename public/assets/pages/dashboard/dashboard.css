@@ -6,11 +6,17 @@
   transition: all 0.5s ease;
 }
 
+.date {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  color: #6c757d;
+}
+
 .clock {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 3em;
+  font-size: 2em;
   font-family: Arial, sans-serif;
 }
 

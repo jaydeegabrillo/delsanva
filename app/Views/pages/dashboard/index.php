@@ -57,6 +57,7 @@
                     <div class="col-lg-3 col-3">
                         <div class="small-box">
                             <div class="inner">
+                                <div class="date"><?= date('M d, Y') ?></div>
                                 <div class="clock">
                                   <div class="hours"></div>:
                                   <div class="minutes"></div>:
