@@ -18,7 +18,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div id="for_in" class="col-lg-3 col-3 <?= ($clock_status['status'] == 'in') ? '' : 'clock_in' ?>" style="cursor:pointer">
+                    <div id="for_in" class="col-lg-3 col-3 <?= ($clock_status['status'] == 'in') ? '' : 'clock_in' ?>" style="cursor:pointer" data-check="<?= $check_location ?>" data-latitude="" data-longitude="">
                         <div class="small-box bg-success clock_status">
                             <div class="inner">
                                 <h3 class="clock_stat">Clock In</h3>
@@ -38,7 +38,7 @@
                             <a href="#" class="small-box-footer"></a>
                         </div>
                     </div>
-                    <div id="for_out" class="col-lg-3 col-3 <?= ($clock_status['status'] == 'in') ? 'clock_out' : '' ?>" style="cursor:pointer">
+                    <div id="for_out" class="col-lg-3 col-3 <?= ($clock_status['status'] == 'in') ? 'clock_out' : '' ?>" style="cursor:pointer" data-check="<?= $check_location ?>" data-latitude="" data-longitude="">
                         <div class="small-box bg-danger clock_status">
                             <div class="inner">
                                 <h3 class="clock_stat">Clock Out</h3>

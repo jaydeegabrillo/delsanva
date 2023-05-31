@@ -1,51 +1,101 @@
 $(document).ready(function(e){
+    getLocation();
 
     $(document).on('click', '.clock_in', function(e){
         e.preventDefault();
 
-        var form_data = $(this).serialize()
-
-        $.ajax({
-            type: 'GET',
-            url: 'dashboard/log',
-            data: form_data,
-            success: function (result) {
-                if (result) {
-                    var time = formatAMPM(new Date());
-
-                    $('#for_in').removeClass('clock_in');
-                    $('#for_out').addClass('clock_out');
-                    $('p.attendance_status').html('Clocked in at ' + time)
-                    $('p.attendance_out_status').html('You have not clocked out yet')
-                }
-            },
-            error: function (err) {
-                console.log(err);
+        var check = $(this).data('check')
+        var lat = $(this).data('latitude');
+        var lon = $(this).data('longitude');
+        var status = 0;
+        var data =  '&lat='+lat+'&lon='+lon;
+        
+        if(check == 0){
+            status = 1;
+        } else {
+            if(lat != '' && lon != ''){
+                status = 1;
             }
-        });
+        }
+        //AIzaSyCqJUd2VUK0J7Hy0uyVsx7uAyyDS2PhtfU  api key geocoding
+        if(status == 0) {
+            Swal.fire( 'Error', 'Please enable geolocation', 'error' )
+        } else {
+            $.ajax({
+                type: 'GET',
+                url: 'dashboard/log',
+                data: data,
+                success: function (result) {
+                    if (result == 'true') {
+                        var time = formatAMPM(new Date());
+                        $('#for_in').removeClass('clock_in');
+                        $('#for_out').addClass('clock_out');
+                        $('p.attendance_status').html('Clocked in at ' + time)
+                        $('p.attendance_out_status').html('You have not clocked out yet')
+                    } else if (result == 'false') {
+                        Swal.fire( 'Error', 'There was an error clocking in. Please try again later.', 'error' )
+                    } else if(result == 'Invalid') {
+                        Swal.fire( 'Error', 'Your address is invalid. Please update.', 'error' )
+                    } else if (result == 'Denied') {
+                        Swal.fire( 'Error', 'Request was denied. Please contact your administrator.', 'error' )
+                    } else {
+                        Swal.fire( 'Error', 'You are '+result+' miles away from address.', 'error' )
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
     })
 
     $(document).on('click', '.clock_out', function(e){
         e.preventDefault();
 
-        var form_data = $(this).serialize()
+        var check = $(this).data('check')
+        var lat = $(this).data('latitude');
+        var lon = $(this).data('longitude');
+        var status = 0;
+        var data = '&lat=' + lat + '&lon=' + lon;
 
-        $.ajax({
-            type: 'GET',
-            url: 'dashboard/log',
-            data: form_data,
-            success: function (result) {
-                if (result) {
-                    $('#for_out').removeClass('clock_out');
-                    $('#for_in').addClass('clock_in');
-                    $('p.attendance_status').html('You have not clocked in yet')
-                    $('p.attendance_out_status').html('You are clocked out')
-                }
-            },
-            error: function (err) {
-                console.log(err);
+        if (check == 0) {
+            status = 1;
+        } else {
+            if (lat != '' && lon != '') {
+                status = 1;
             }
-        });
+        }
+
+        if (status == 0) {
+            Swal.fire( 'Error', 'Please enable geolocation', 'error' )
+        } else {
+            $.ajax({
+                type: 'GET',
+                url: 'dashboard/log',
+                data: data,
+                success: function (result) {
+                    if (result) {
+                        $('#for_out').removeClass('clock_out');
+                        $('#for_in').addClass('clock_in');
+                        $('p.attendance_status').html('You have not clocked in yet')
+                        $('p.attendance_out_status').html('You are clocked out')
+                    } else if (result == 'false') {
+                        Swal.fire('Error', 'There was an error clocking out. Please try again later.', 'error')
+                    } else if (result == 'Invalid') {
+                        Swal.fire('Error', 'Your address is invalid. Please update.', 'error')
+                    } else if (result == 'Denied') {
+                        Swal.fire('Error', 'Request was denied. Please contact your administrator.', 'error')
+                    } else {
+                        Swal.fire('Error', 'You are ' + result + ' miles away from address.', 'error')
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
     })
 
     $(document).on('submit', '#update_password_form', function(e){
@@ -77,6 +127,53 @@ $(document).ready(function(e){
         });
     })
 });
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function showPosition(position) {
+    // return position.coords;
+    $('.clock_in, .clock_out').attr('data-latitude', position.coords.latitude);
+    $('.clock_in, .clock_out').attr('data-longitude', position.coords.longitude);
+}
+
+function showError(error) {
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            Swal.fire(
+                'Error',
+                'You have the denied the request for Geolocation',
+                'error'
+            );
+            break;
+        case error.POSITION_UNAVAILABLE:
+            Swal.fire(
+                'Error',
+                'Location information is unavailable',
+                'error'
+            );
+            break;
+        case error.TIMEOUT:
+            Swal.fire(
+                'Error',
+                'The request to get location timed out',
+                'error'
+            );
+            break;
+        case error.UNKNOWN_ERROR:
+            Swal.fire(
+                'Error',
+                'An unknown error occurred',
+                'error'
+            );
+            break;
+    }
+}
 
 function formatAMPM(date) {
     var hours = date.getHours();

@@ -16,9 +16,9 @@ class DashboardModel extends Model
         }
 
         if($result){
-            return true;
+            echo "true";
         }else{
-            return false;
+            echo "false";
         }
     }
 

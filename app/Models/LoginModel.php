@@ -9,7 +9,7 @@ class LoginModel extends Model
     public function check_user($data = array()){
         $db = \Config\Database::connect();
 
-        $sql = "SELECT id, CONCAT(u.first_name, ' ', u.last_name) as name, email, position_id FROM users u WHERE u.email = '{$data['email']}' AND u.password = '".$data['password']."' AND deleted = 0";
+        $sql = "SELECT id, CONCAT(u.first_name, ' ', u.last_name) as name, email, position_id, check_location, address, apt, state, city, zip FROM users u WHERE u.email = '{$data['email']}' AND u.password = '".$data['password']."' AND deleted = 0";
 
         $user = $db->query($sql)->getRowArray();
 

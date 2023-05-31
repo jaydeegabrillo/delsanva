@@ -23,6 +23,7 @@ class Dashboard extends BaseController
             'title' => 'Dashboard',
             'clock_status' => $this->dashboardModel->get_clock_status($id),
             'missing_logs' => $this->dashboardModel->get_attendance($id),
+            'check_location' => $this->session->get('check_location')
         );
 
         $script['js_scripts'] = array();
@@ -39,9 +40,9 @@ class Dashboard extends BaseController
     }
 
     public function log(){
-
+        
         $check_status = $this->dashboardModel->get_clock_status($this->session->get('user_id'));
-
+        
         $data = array(
             'id' => $check_status['id'],
             'user_id' => $this->session->get('user_id'),
@@ -49,14 +50,64 @@ class Dashboard extends BaseController
             'clock_in' => date('c'),
             'deleted' => 0,
         );
+        
 
-        $result = $this->dashboardModel->log($data);
-
-        if($result){
-            echo true;
-        }else{
-            echo false;
+        if($this->session->get('check_location') == 0){
+            $status = 'OK';
+        } else {
+            $api_key = 'AIzaSyB0Eu3JwNopnOlzEVc42uJQW5WwJ_2UZ5A';
+            $full_address = $this->session->get('address') . ' ' . $this->session->get('apt') . ' ' . $this->session->get('state') . ' ' . $this->session->get('city') . ' ' . $this->session->get('zip');
+            $address = str_replace(" ", "+",$full_address);
+    
+            $google_verify = json_decode(file_get_contents("https://maps.google.com/maps/api/geocode/json?key=".$api_key."&address=".$address));
+    
+            if($google_verify->status == 'REQUEST_DENIED') {
+                $status = 'Denied';
+            } else if ($google_verify->status == 'OK') {
+                $addresses = $google_verify->results[0]->address_components;
+                $validated = false;
+                $validate_zipcode = (preg_match('/^[0-9]{5}(-[0-9]{4})?$/', $this->session->get('zip'))) ? true : false;
+                
+                for($c=0;$c<count($addresses);$c++){
+                    if(in_array("street_number", $addresses[$c]->types) && ($this->str_contains($address, $addresses[$c]->long_name) || $this->str_contains($address, $addresses[$c]->short_name)) ){
+                        $validated = true;
+                    }
+                }
+    
+                if(count($google_verify->results) > 0 && $validated && $validate_zipcode && !isset($google_verify->results[0]->partial_match)){
+                    $coordinates = $google_verify->results[0]->geometry->location;
+                    $lat = $coordinates->lat;
+                    $long = $coordinates->lng;
+                    $lat2 = $this->request->getVar('lat');
+                    $long2 = $this->request->getVar('lon');
+                    
+                    $distance = $this->distance($lat, $long, $lat2, $long2, 'M');
+    
+                    if($distance <= 1){
+                        $status = 'OK';
+                    } else {
+                        $status = $distance;
+                    }
+                }else{
+                    $status = "Invalid";
+                }
+            } else {
+                $status = 'Invalid';
+            }
         }
+        
+        if($status == 'OK'){
+            $result = $this->dashboardModel->log($data);
+
+            if($result){
+                echo true;
+            }else{
+                echo false;
+            }
+        } else {
+            echo $status;
+        }
+
     }
 
     public function update_password(){
@@ -89,5 +140,31 @@ class Dashboard extends BaseController
         }
 
         echo json_encode($alert);
+    }
+
+    function str_contains( $haystack, $needle)
+    {
+        return $needle !== '' && mb_strpos($haystack, $needle) !== false;
+    }
+
+    function distance($lat1, $lon1, $lat2, $lon2, $unit) {
+        if (($lat1 == $lat2) && ($lon1 == $lon2)) {
+            return 0;
+        } else {
+            $theta = $lon1 - $lon2;
+            $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+            $dist = acos($dist);
+            $dist = rad2deg($dist);
+            $miles = $dist * 60 * 1.1515;
+            $unit = strtoupper($unit);
+
+            if ($unit == "K") {
+            return ($miles * 1.609344);
+            } else if ($unit == "N") {
+            return ($miles * 0.8684);
+            } else {
+            return $miles;
+            }
+        }
     }
 }

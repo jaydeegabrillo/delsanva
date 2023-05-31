@@ -44,14 +44,20 @@ class Login extends BaseController
                 'logged_in'=> true
             );
         }
-
+        
         $validate = $loginModel->check_user($data);
-
+        
         if($validate){
             $data['user_id'] = $validate['id'];
             $data['name'] = $validate['name'];
             $data['email'] = $validate['email'];
             $data['position_id'] = $validate['position_id'];
+            $data['address'] = $validate['address'];
+            $data['apt'] = $validate['apt'];
+            $data['state'] = $validate['state'];
+            $data['city'] = $validate['city'];
+            $data['zip'] = $validate['zip'];
+            $data['check_location'] = $validate['check_location'];
 
             $this->session->set($data);
 
