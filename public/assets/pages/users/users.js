@@ -48,6 +48,8 @@ $(document).ready(function(){
     $(document).on('hidden.bs.modal', '#add_user_modal', function(e){
         $('#add_user_form').find('input').val('');
         $('input[name="id"]').val('');
+        $('input[name="check_location"]').attr('checked', false);
+        $('input[name="check_location"]').val('1');
     })
 
     $(document).on('click','.view_user', function(e){
@@ -66,8 +68,16 @@ $(document).ready(function(){
             success: function (result) {
                 if (result) {
                     $.each(JSON.parse(result), function (index, value) {
-                        $("input[name='"+index+"']").val(value)
-                        $("select[name='"+index+"']").val(value).change()
+                        if(index == 'check_location'){
+                            if(value == 0){
+                                $("input[name='"+index+"']").attr('checked', false);
+                            } else {
+                                $("input[name='"+index+"']").attr('checked', true);
+                            }
+                        } else {
+                            $("input[name='" + index + "']").val(value)
+                            $("select[name='" + index + "']").val(value).change()
+                        }
                     });
                 }
             },
@@ -95,7 +105,15 @@ $(document).ready(function(){
                         if(index === 'password'){
                             $("input[name='"+index+"']").val('')
                         }else{
-                            $("input[name='"+index+"']").val(value)
+                            if (index == 'check_location') {
+                                if (value == 0) {
+                                    $("input[name='" + index + "']").attr('checked', false);
+                                } else {
+                                    $("input[name='" + index + "']").attr('checked', true);
+                                }
+                            } else {
+                                $("input[name='" + index + "']").val(value)
+                            }
                         }
                     });
                 }

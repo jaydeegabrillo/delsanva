@@ -41,6 +41,10 @@
                             <input type="password" name="password" class="form-control" value="">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="check_location" class="" value="1"> 
+                        <label for="check_location">Check Location</label>
+                    </div>
                     <hr>
                     <h3>Address</h3>
                     <div class="form-group">

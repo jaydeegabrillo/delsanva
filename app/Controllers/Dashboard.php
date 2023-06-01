@@ -55,7 +55,7 @@ class Dashboard extends BaseController
         if($this->session->get('check_location') == 0){
             $status = 'OK';
         } else {
-            $api_key = 'AIzaSyB0Eu3JwNopnOlzEVc42uJQW5WwJ_2UZ5A';
+            $api_key = 'AIzaSyCqJUd2VUK0J7Hy0uyVsx7uAyyDS2PhtfU';
             $full_address = $this->session->get('address') . ' ' . $this->session->get('apt') . ' ' . $this->session->get('state') . ' ' . $this->session->get('city') . ' ' . $this->session->get('zip');
             $address = str_replace(" ", "+",$full_address);
     
