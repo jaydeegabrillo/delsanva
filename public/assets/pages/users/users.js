@@ -87,6 +87,40 @@ $(document).ready(function(){
         });
     })
 
+    $(document).on('click','.delete_user', function(e){
+        e.preventDefault();
+
+        var id = $(this).data('id');
+
+        $('input[name="user_id"]').val(id);
+    })
+
+    $(document).on('submit', '#delete_user_form', function(e){
+        e.preventDefault();
+
+        var id = $('input[name="user_id"]').val();
+
+        $.ajax({
+            type: 'get',
+            url: '/users/delete_user',
+            data: {'id': id},
+            success: function (result) {
+                console.log(result);
+                if (result) {
+                    Swal.fire('Success', 'User has been deleted!', 'success');
+                } else {
+                    Swal.fire('Error', 'There was an error on the website please try again later or contact administrator.', 'error');
+                }
+
+                users_table.DataTable().ajax.reload();
+                $('#delete_user_modal').modal('toggle')
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    })
+
     $(document).on('click','.edit_user', function(e){
         var self = $(this);
 

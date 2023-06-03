@@ -27,12 +27,13 @@ class Users extends BaseController
 
     public function users_datatable(){
         $db = db_connect();
-        $builder = $db->table('users')->select('id, CONCAT(first_name, " ", last_name) AS full_name, email');
+        $builder = $db->table('users')->select('id, CONCAT(first_name, " ", last_name) AS full_name, email')->where('deleted',0);
 
         return DataTable::of($builder)
         ->add('action', function($row){
             return '<button type="button" class="btn btn-warning btn-sm view_user" data-toggle="modal" data-target="#add_user_modal" data-id="'.$row->id.'"><i class="fa fa-eye"></i> View</button>
-                    <button type="button" class="btn btn-primary btn-sm edit_user" data-toggle="modal" data-target="#add_user_modal" data-id="'.$row->id.'"><i class="fa fa-edit"></i> Edit</button>';
+                    <button type="button" class="btn btn-primary btn-sm edit_user" data-toggle="modal" data-target="#add_user_modal" data-id="'.$row->id.'"><i class="fa fa-edit"></i> Edit</button>
+                    <button type="button" class="btn btn-danger btn-sm delete_user" data-toggle="modal" data-target="#delete_user_modal" data-id="'.$row->id.'"><i class="fa fa-trash"></i> Delete</button>';
         }, 'last')
         ->toJson();
     }
@@ -45,6 +46,21 @@ class Users extends BaseController
             $result = $db->table('users u')->where('id', $id)->get()->getResult();
 
             echo ($result) ? json_encode($result[0]) : 0;
+        }
+    }
+
+    public function delete_user(){
+        $id = $this->request->getVar('id');
+        
+        if($id){
+            
+            $result = $this->db->table('users')->where('id', $id)->update(['deleted' => 1]);
+            
+            if($result){
+                echo true;
+            } else {
+                echo false;
+            }
         }
     }
 
