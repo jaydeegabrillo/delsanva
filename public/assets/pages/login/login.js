@@ -24,6 +24,20 @@ $(document).ready(function(){
         });
     });
 
+    $(document).on('click','.show_password', function(e){
+        e.preventDefault();
+        var action = $(this).data('action');
+
+        if(action == 'show'){
+            $('input[name="password"]').attr('type', 'text');
+            $(this).data('action','hide')
+        } else {
+            $('input[name="password"]').attr('type', 'password');
+            $(this).data('action', 'show')
+        }
+
+    });
+
     $(document).on('submit','#reset_password_form', function(e){
         e.preventDefault();
 

@@ -59,12 +59,12 @@
                     </div>
                     <div class="form-group">
                         <div style="display:inline-block; width: 33%">
-                            <label for="state">State</label>
-                            <input type="text" name="state" class="form-control" value="">
-                        </div>
-                        <div style="display:inline-block; width: 33%">
                             <label for="city">City</label>
                             <input type="text" name="city" class="form-control" value="">
+                        </div>
+                        <div style="display:inline-block; width: 33%">
+                            <label for="state">State</label>
+                            <input type="text" name="state" class="form-control" value="">
                         </div>
                         <div style="display:inline-block; width: 33%">
                             <label for="zip">Zip</label>
