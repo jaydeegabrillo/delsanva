@@ -47,6 +47,12 @@
                     </div>
                     <hr>
                     <h3>Address</h3>
+                    <select class="form-control" id="select_country">
+                        <option></option>
+                        <option value="usa">USA</option>
+                        <option value="nigeria">Nigeria</option>
+                        <option value="philippines">Philippines</option>
+                    </select>
                     <div class="form-group">
                         <div style="display:inline-block; width: 75%">
                             <label for="address">Street Address</label>
@@ -60,11 +66,17 @@
                     <div class="form-group">
                         <div style="display:inline-block; width: 33%">
                             <label for="city">City</label>
+                            <!-- <select class="form-control" name="city">
+                                <option></option>
+                            </select> -->
                             <input type="text" name="city" class="form-control" value="">
                         </div>
                         <div style="display:inline-block; width: 33%">
                             <label for="state">State</label>
-                            <input type="text" name="state" class="form-control" value="">
+                            <select class="form-control" name="state">
+                                <option></option>
+                            </select>
+                            <!-- <input type="text" name="state" class="form-control" value=""> -->
                         </div>
                         <div style="display:inline-block; width: 33%">
                             <label for="zip">Zip</label>

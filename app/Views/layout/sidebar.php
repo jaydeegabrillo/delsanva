@@ -62,7 +62,7 @@
 <div class="wrapper">
 
     <div class="preloader flex-column justify-content-center align-items-center">
-        <img class="animation__shake" src="assets/images/delsanva.jpg" alt="DelsanVA Logo" style="height:100; min-width:100; width:100%;">
+        <!-- <img class="animation__shake" src="assets/images/delsanva.jpg" alt="DelsanVA Logo" style="height:100; min-width:100; width:100%;"> -->
     </div>
 
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
