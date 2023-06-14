@@ -147,6 +147,7 @@ $(document).ready(function(){
                                 }
                             } else {
                                 $("input[name='" + index + "']").val(value)
+                                $("select[name='" + index +"']").val(value).change()
                             }
                         }
                     });
