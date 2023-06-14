@@ -47,7 +47,8 @@
                     </div>
                     <hr>
                     <h3>Address</h3>
-                    <select class="form-control" id="select_country">
+                    <label>Country</label>
+                    <select class="form-control" id="select_country" style="width:40%">
                         <option></option>
                         <option value="usa">USA</option>
                         <option value="nigeria">Nigeria</option>
