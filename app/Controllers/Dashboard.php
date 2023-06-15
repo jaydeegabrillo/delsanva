@@ -65,16 +65,17 @@ class Dashboard extends BaseController
                 $status = 'Denied';
             } else if ($google_verify->status == 'OK') {
                 $addresses = $google_verify->results[0]->address_components;
-                $validated = false;
+                $validated = true;
                 $validate_zipcode = (preg_match('/^[0-9]{5}(-[0-9]{4})?$/', $this->session->get('zip'))) ? true : false;
                 
-                for($c=0;$c<count($addresses);$c++){
-                    if(in_array("street_number", $addresses[$c]->types) && ($this->str_contains($address, $addresses[$c]->long_name) || $this->str_contains($address, $addresses[$c]->short_name)) ){
-                        $validated = true;
-                    }
-                }
+                // for($c=0;$c<count($addresses);$c++){
+                //     if(in_array("street_number", $addresses[$c]->types) && ($this->str_contains($address, $addresses[$c]->long_name) || $this->str_contains($address, $addresses[$c]->short_name)) ){
+                //         $validated = true;
+                //     }
+                // }
     
-                if(count($google_verify->results) > 0 && $validated && $validate_zipcode && !isset($google_verify->results[0]->partial_match)){
+                // if(count($google_verify->results) > 0 && $validated && $validate_zipcode && !isset($google_verify->results[0]->partial_match)){
+                if(count($google_verify->results) > 0){
                     $coordinates = $google_verify->results[0]->geometry->location;
                     $lat = $coordinates->lat;
                     $long = $coordinates->lng;
@@ -88,8 +89,8 @@ class Dashboard extends BaseController
                     } else {
                         $status = $distance;
                     }
-                }else{
-                    $status = "Invalid";
+                // }else{
+                //     $status = "Invalid";
                 }
             } else {
                 $status = 'Invalid';
