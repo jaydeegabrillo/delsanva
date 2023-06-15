@@ -191,7 +191,7 @@ function formatAMPM(date) {
 //for clock
 function updateTime() {
   const now = new Date();
-  const time = now.toLocaleTimeString([], { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit', hourCycle: 'h12' });
+  const time = now.toLocaleTimeString([], { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit', hourCycle: 'h12', timeZone: 'America/Chicago' });
   const [hours, minutes, seconds] = time.split(/:|\s/);
 
   document.querySelector('.hours').textContent = hours;

@@ -28,7 +28,7 @@ class Users extends BaseController
     public function users_datatable(){
         $db = db_connect();
         $builder = $db->table('users')->select('id, CONCAT(first_name, " ", last_name) AS full_name, email')->where('deleted',0);
-
+        
         return DataTable::of($builder)
         ->add('action', function($row){
             return '<button type="button" class="btn btn-warning btn-sm view_user" data-toggle="modal" data-target="#add_user_modal" data-id="'.$row->id.'"><i class="fa fa-eye"></i> View</button>
@@ -89,7 +89,7 @@ class Users extends BaseController
 
         unset($data['/users/add_user']);
 
-        $data['position_id'] = 3;
+        $data['position_id'] = (!isset($data['position_id'])) ? 3 : $data['position_id'];
         $data['date_added'] = date('Y-m-d H:i:s');
 
         if(isset($data['id']) && $data['id'] != NULL){

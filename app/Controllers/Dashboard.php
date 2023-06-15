@@ -50,13 +50,14 @@ class Dashboard extends BaseController
             'clock_in' => date('c'),
             'deleted' => 0,
         );
-        
 
-        if($this->session->get('check_location') == 0){
+        $user_details = $this->db->table('users')->where('id', $this->session->get('user_id'))->get()->getRow();
+        
+        if($user_details->check_location == 0){
             $status = 'OK';
         } else {
             $api_key = 'AIzaSyCqJUd2VUK0J7Hy0uyVsx7uAyyDS2PhtfU';
-            $full_address = $this->session->get('address') . ' ' . $this->session->get('apt') . ' ' . $this->session->get('state') . ' ' . $this->session->get('city') . ' ' . $this->session->get('zip');
+            $full_address = ($user_details->country != 'philippines') ? $user_details->address . ' ' . $user_details->apt . ' ' . $user_details->state. ' ' . $user_details->city . ' ' . $user_details->zip : $user_details->address;
             $address = str_replace(" ", "+",$full_address);
     
             $google_verify = json_decode(file_get_contents("https://maps.google.com/maps/api/geocode/json?key=".$api_key."&address=".$address));
@@ -65,17 +66,23 @@ class Dashboard extends BaseController
                 $status = 'Denied';
             } else if ($google_verify->status == 'OK') {
                 $addresses = $google_verify->results[0]->address_components;
-                $validated = true;
-                $validate_zipcode = (preg_match('/^[0-9]{5}(-[0-9]{4})?$/', $this->session->get('zip'))) ? true : false;
-                
-                // for($c=0;$c<count($addresses);$c++){
-                //     if(in_array("street_number", $addresses[$c]->types) && ($this->str_contains($address, $addresses[$c]->long_name) || $this->str_contains($address, $addresses[$c]->short_name)) ){
-                //         $validated = true;
-                //     }
-                // }
+                $validated = false;
+
+                if($user_details->country != 'philippines'){
+                    $validate_zipcode = (preg_match('/^[0-9]{5}(-[0-9]{4})?$/', $user_details->zip)) ? true : false;
+                    
+                    for($c=0;$c<count($addresses);$c++){
+                        if(in_array("street_number", $addresses[$c]->types) && ($this->str_contains($address, $addresses[$c]->long_name) || $this->str_contains($address, $addresses[$c]->short_name)) ){
+                            $validated = true;
+                        }
+                    }
+
+                    $success = (count($google_verify->results) > 0 && $validated && $validate_zipcode && !isset($google_verify->results[0]->partial_match)) ? true : false ;
+                } else {
+                    $success = (count($google_verify->results) > 0) ? true : false ;
+                }
     
-                // if(count($google_verify->results) > 0 && $validated && $validate_zipcode && !isset($google_verify->results[0]->partial_match)){
-                if(count($google_verify->results) > 0){
+                if($success){
                     $coordinates = $google_verify->results[0]->geometry->location;
                     $lat = $coordinates->lat;
                     $long = $coordinates->lng;
@@ -89,8 +96,8 @@ class Dashboard extends BaseController
                     } else {
                         $status = $distance;
                     }
-                // }else{
-                //     $status = "Invalid";
+                }else{
+                    $status = "Invalid";
                 }
             } else {
                 $status = 'Invalid';
