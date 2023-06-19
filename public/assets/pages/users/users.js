@@ -45,6 +45,18 @@ $(document).ready(function(){
         });
     });
 
+    $(document).on('change','input[name="check_location"]', function(){
+        var self = $(this);
+        var checked = $(this).prop('checked');
+
+        if(checked){
+            self.val(1)
+        } else {
+            self.val(0)
+        }
+    });
+
+
     $(document).on('hidden.bs.modal', '#add_user_modal', function(e){
         $('#add_user_form').find('input').val('');
         $('input[name="id"]').val('');

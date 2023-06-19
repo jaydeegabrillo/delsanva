@@ -27,10 +27,15 @@ $(document).ready(function(e){
                 data: data,
                 success: function (result) {
                     if (result == 'true') {
-                        var time = formatAMPM(new Date());
+                        var now = new Date();
+                        var time = now.toLocaleTimeString([], { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit', hourCycle: 'h12', timeZone: 'America/Chicago' });
+                        const [hours, minutes, seconds, ampm] = time.split(/:|\s/);
+
+                        var curtime = hours + ":" + minutes + " " + ampm;
+
                         $('#for_in').removeClass('clock_in');
                         $('#for_out').addClass('clock_out');
-                        $('p.attendance_status').html('Clocked in at ' + time)
+                        $('p.attendance_status').html('Clocked in at ' + curtime)
                         $('p.attendance_out_status').html('You have not clocked out yet')
                     } else if (result == 'false') {
                         Swal.fire( 'Error', 'There was an error clocking in. Please try again later.', 'error' )
@@ -192,13 +197,11 @@ function formatAMPM(date) {
 function updateTime() {
   const now = new Date();
   const time = now.toLocaleTimeString([], { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit', hourCycle: 'h12', timeZone: 'America/Chicago' });
-  const [hours, minutes, seconds] = time.split(/:|\s/);
+  const [hours, minutes, seconds, ampm] = time.split(/:|\s/);
 
   document.querySelector('.hours').textContent = hours;
   document.querySelector('.minutes').textContent = minutes;
   document.querySelector('.seconds').textContent = seconds;
-
-  const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
   document.querySelector('.ampm').textContent = ampm;
 }
 
