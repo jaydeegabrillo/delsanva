@@ -90,10 +90,10 @@ class Timesheet extends BaseController
 
         return DataTable::of($builder)
         ->edit('clock_in', function($row){
-            return date('H:i A', strtotime($row->clock_in));
+            return date('h:i A', strtotime($row->clock_in));
         })
         ->edit('clock_out', function($row){
-            return date('H:i A', strtotime($row->clock_out));
+            return date('h:i A', strtotime($row->clock_out));
         })
         ->edit('date', function($row){
             return date('M d, Y', strtotime($row->date));
