@@ -7,9 +7,9 @@ class Users extends BaseController
 {
     protected $db;
 
-    public function __construct(){
-        $this->db = \Config\Database::connect();
-    }
+    // public function __construct(){
+    //     $this->db = \Config\Database::connect();
+    // }
 
     public function index()
     {
@@ -27,10 +27,10 @@ class Users extends BaseController
 
     public function users_datatable(){
         $db = db_connect();
-        $builder = $db->table('users')->select('id, CONCAT(first_name, " ", last_name) AS full_name, email, "" as action ')->where('deleted',0);
+        $builder = $db->table('users')->select('id, CONCAT(first_name, " ", last_name) AS full_name, email ')->where('deleted',0);
         
         return DataTable::of($builder)
-        ->edit('action', function($row){
+        ->add('action', function($row){
             return '<button type="button" class="btn btn-warning btn-sm view_user" data-toggle="modal" data-target="#add_user_modal" data-id="'.$row->id.'"><i class="fa fa-eye"></i> View</button>
                     <button type="button" class="btn btn-primary btn-sm edit_user" data-toggle="modal" data-target="#add_user_modal" data-id="'.$row->id.'"><i class="fa fa-edit"></i> Edit</button>
                     <button type="button" class="btn btn-danger btn-sm delete_user" data-toggle="modal" data-target="#delete_user_modal" data-id="'.$row->id.'"><i class="fa fa-trash"></i> Delete</button>';

@@ -7,7 +7,7 @@ $(document).ready(function(){
         pageLength: 50,
         processing: true,
         serverSide: true,
-        order: [[1, "asc"]],
+        order: [[0, "asc"]],
         ajax: "users/users-datatable",
         columnDefs: [
             { targets: 0, orderable: false }, //first column is not orderable.
@@ -60,7 +60,7 @@ $(document).ready(function(){
     $(document).on('hidden.bs.modal', '#add_user_modal', function(e){
         $('#add_user_form').find('input').val('');
         $('input[name="id"]').val('');
-        $('select').val('').change();
+        $('select[name="state"], select[name="country"]').val('').change();
         $('input[name="check_location"]').attr('checked', false);
         $('input[name="check_location"]').val('1');
     })
