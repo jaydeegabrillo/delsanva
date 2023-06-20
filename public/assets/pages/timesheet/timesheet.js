@@ -1,7 +1,8 @@
 $(document).ready(function(){
     const slug = 'timesheet';
     var timesheet_table = $("#timesheet_table")
-    var timesheet_form = $('#timesheet_pdf_form');
+    var timesheet_form = $('#timesheet_pdf_form')
+    var add_timesheet_form = $('#add_timesheet_form')
 
     timesheet_table.DataTable({
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -32,6 +33,35 @@ $(document).ready(function(){
         var url = slug + "/timesheet_pdf?" + data;
         window.open(url, '_blank');
     });
+
+    add_timesheet_form.submit(function(e){
+        e.preventDefault();
+
+        var data = $(this).serialize()
+
+        $.ajax({
+            url: 'timesheet/add_timesheet/',
+            type: 'get',
+            data: data,
+            success: function (result) {
+                var alerts = JSON.parse(result)
+
+                Swal.fire(
+                    alerts.header,
+                    alerts.message,
+                    alerts.type
+                )
+
+                $('#add_timesheet_modal').modal('toggle')
+                $('.modal-backdrop').remove();
+
+                timesheet_table.DataTable().ajax.reload()
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    })
 
     $(document).on('click', '.edit_attendance', function(e){
         e.preventDefault();

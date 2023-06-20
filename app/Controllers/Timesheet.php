@@ -21,6 +21,8 @@ class Timesheet extends BaseController
     public function index()
     {
         $data['title'] = 'Timesheet';
+        $data['users'] = $this->db->table('users')->select('id, first_name, last_name')->where('deleted', 0)->get()->getResultArray();
+        
         $script['js_scripts'] = array();
         array_push($script['js_scripts'], '/pages/timesheet/timesheet.js');
 
@@ -30,6 +32,31 @@ class Timesheet extends BaseController
         );
 
         $this->load_view($data,$script,$path);
+    }
+
+    public function add_timesheet(){
+        $data = $this->request->getVar();
+        
+        $data['date'] = date('Y-m-d', strtotime($data['clock_in']));
+        unset($data['/timesheet/add_timesheet']);
+
+        $insert = $this->db->table('attendance')->insert($data);
+
+        if($insert){
+            $alert = array(
+                'header' => 'Success!',
+                'message' => 'Timesheet has been added',
+                'type' => 'success'
+            );
+        } else {
+            $alert = array(
+                'header' => 'Oops!',
+                'message' => 'Something went wrong...',
+                'type' => 'error'
+            );
+        }
+
+        echo json_encode($alert);
     }
 
     public function update_log(){

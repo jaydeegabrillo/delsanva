@@ -52,6 +52,7 @@ $routes->group("timesheet", ["namespace" => "App\Controllers"], function ($route
 	$routes->get("timesheet-datatable", "Timesheet::timesheet_datatable");
     $routes->get("timesheet_pdf", "Timesheet::timesheet_pdf");
     $routes->get("update_log", "Timesheet::update_log");
+    $routes->get("add_timesheet", "Timesheet::add_timesheet");
 });
 $routes->group("login", ["namespace" => "App\Controllers"], function ($routes) {
 	$routes->get("/", "Login::index");
