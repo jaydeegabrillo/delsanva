@@ -5,11 +5,6 @@ use \Hermawan\DataTables\DataTable;
 
 class Users extends BaseController
 {
-    protected $db;
-
-    // public function __construct(){
-    //     $this->db = \Config\Database::connect();
-    // }
 
     public function index()
     {
@@ -50,11 +45,12 @@ class Users extends BaseController
     }
 
     public function delete_user(){
+        $db = db_connect();
         $id = $this->request->getVar('id');
         
         if($id){
             
-            $result = $this->db->table('users')->where('id', $id)->update(['deleted' => 1]);
+            $result = $db->table('users')->where('id', $id)->update(['deleted' => 1]);
             
             if($result){
                 echo true;
@@ -66,6 +62,7 @@ class Users extends BaseController
 
     public function add_user(){
         $encrypter = \Config\Services::encrypter();
+        $db = db_connect();
 
         $cipher = "AES-256-CBC";
         $secret = "DelsanVA";
@@ -94,7 +91,7 @@ class Users extends BaseController
         $data['date_added'] = date('Y-m-d H:i:s');
         
         if(isset($data['id']) && $data['id'] != NULL){
-            $result = $this->db->table('users')->where('id', $data['id'])->update($data);
+            $result = $db->table('users')->where('id', $data['id'])->update($data);
 
             if($result){
                 $alert = array(
@@ -110,7 +107,8 @@ class Users extends BaseController
                 );
             }
         } else {
-            $result = $this->db->table('users')->insert($data);
+            unset($data['id']);
+            $result = $db->table('users')->insert($data);
 
             if($result){
                 $alert = array(
