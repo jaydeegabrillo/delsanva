@@ -16,7 +16,8 @@ $(document).ready(function(){
             { targets: 0, orderable: false }, //first column is not orderable.
         ],
         fnRowCallback: function(nRow, aData){
-            if (aData[2] == '00:00 AM' || aData[3] == '00:00 AM'){
+            console.log(aData[2], aData[3]);
+            if (aData[2] == '-' || aData[3] == '-'){
                 $('td', nRow).css(
                     {
                         'color': 'white',
