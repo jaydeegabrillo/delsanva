@@ -101,7 +101,7 @@ class Timesheet extends BaseController
         ->add('action', function($row){
             if($this->session->get('position_id') == 1){
                 $in = ($row->clock_in == '') ? '' : date("H:i", strtotime($row->clock_in));
-                $out = ($row->clock_out == '') ? '' : date("H:i", strtotime($row->clock_out));
+                $out = ($row->clock_out == '' || $row->clock_out == '0000-00-00 00:00:00') ? '' : date("H:i", strtotime($row->clock_out));
 
                 return '<button type="button" class="btn btn-warning btn-sm edit_attendance" data-toggle="modal" data-target="#edit_attendance" data-in="'.$in.'" data-out="'.$out.'" data-id="'.$row->id.'"><i class="fa fa-edit"></i> Edit</button>';
             } else {
