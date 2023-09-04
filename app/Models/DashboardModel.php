@@ -10,7 +10,7 @@ class DashboardModel extends Model
         $db = \Config\Database::connect();
 
         if($data['id'] != ''){
-            $result = $db->table('attendance')->where('id', $data['id'])->update(['clock_out' => date('Y-m-d h:i:s')]);
+            $result = $db->table('attendance')->where('id', $data['id'])->update(['clock_out' => date('c')]);
         }else{
             $result = $db->table('attendance')->insert($data);
         }

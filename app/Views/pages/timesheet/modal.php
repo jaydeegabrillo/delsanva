@@ -11,11 +11,11 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="date_from">Date From:</label>
-                        <input type="date" name="date_from" class="form-control" value="">
+                        <input type="date" name="date_from" class="form-control" value="" required>
                     </div>
                     <div class="form-group">
                         <label for="date_to">Date To:</label>
-                        <input type="date" name="date_to" class="form-control" value="">
+                        <input type="date" name="date_to" class="form-control" value="" required>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
