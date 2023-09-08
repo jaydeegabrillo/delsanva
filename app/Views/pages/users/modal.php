@@ -52,7 +52,6 @@
                     <select class="form-control" id="select_country" name="country" style="width:40%">
                         <option></option>
                         <option value="usa">USA</option>
-                        <option value="nigeria">Nigeria</option>
                         <option value="philippines">Philippines</option>
                     </select>
                     <div class="form-group">
@@ -95,11 +94,12 @@
     </div>
 </div>
 
+<!-- This is modal for archiving. Previously was called delete so I did not update the id and class names -->
 <div class="modal fade show" id="delete_user_modal" style="display: none; padding-right: 17px;" aria-modal="true" role="dialog">
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Delete User</h4>
+                <h4 class="modal-title">Archive User</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -107,7 +107,7 @@
             <form class="" id="delete_user_form" action="javascript:void(0);">
                 <div class="modal-body text-center">
                     <input type="hidden" name="user_id">
-                    <h4>Are you sure you want to delete this user?</h4>
+                    <h4>Are you sure you want to archive this user?</h4>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="submit" class="btn btn-primary">Save</button>

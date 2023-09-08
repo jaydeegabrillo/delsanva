@@ -10,11 +10,26 @@ class Users extends BaseController
     {
         $data['title'] = 'Users';
         $script['js_scripts'] = array();
-        // $path = 'pages/users/index';
+        
         $path = array(
             'pages/users/index',
             'pages/users/modal'
         );
+
+        array_push($script['js_scripts'], '/pages/users/users.js');
+
+        $this->load_view($data,$script,$path);
+    }
+
+    public function archive(){
+        $data['title'] = 'Archive';
+        $script['js_scripts'] = array();
+        
+        $path = array(
+            'pages/users/archive',
+            'pages/users/modal'
+        );
+
         array_push($script['js_scripts'], '/pages/users/users.js');
 
         $this->load_view($data,$script,$path);
@@ -28,9 +43,35 @@ class Users extends BaseController
         ->add('action', function($row){
             return '<button type="button" class="btn btn-warning btn-sm view_user" data-toggle="modal" data-target="#add_user_modal" data-id="'.$row->id.'"><i class="fa fa-eye"></i> View</button>
                     <button type="button" class="btn btn-primary btn-sm edit_user" data-toggle="modal" data-target="#add_user_modal" data-id="'.$row->id.'"><i class="fa fa-edit"></i> Edit</button>
-                    <button type="button" class="btn btn-danger btn-sm delete_user" data-toggle="modal" data-target="#delete_user_modal" data-id="'.$row->id.'"><i class="fa fa-trash"></i> Delete</button>';
+                    <button type="button" class="btn btn-danger btn-sm delete_user" data-toggle="modal" data-target="#delete_user_modal" data-id="'.$row->id.'"><i class="fa fa-archive"></i> Archive</button>';
         }, 'last')
         ->toJson();
+    }
+
+    public function archives_datatable(){
+        $db = db_connect();
+        $builder = $db->table('users')->select('id, CONCAT(first_name, " ", last_name) AS full_name, email ')->where('deleted',1);
+        
+        return DataTable::of($builder)
+        ->add('action', function($row){
+            return ' <button type="button" class="btn btn-danger btn-sm unarchive_user" data-id="'.$row->id.'"><i class="fa fa-archive"></i> Unarchive</button>'; }, 'last')
+        ->toJson();
+    }
+
+    public function unarchive_user(){
+        $db = db_connect();
+        $id = $this->request->getVar('id');
+        
+        if($id){
+            
+            $result = $db->table('users')->where('id', $id)->update(['deleted' => 0]);
+            
+            if($result){
+                echo true;
+            } else {
+                echo false;
+            }
+        }
     }
 
     public function get_user(){

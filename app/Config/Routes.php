@@ -36,17 +36,23 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Dashboard::index');
+
 $routes->group("users", ["namespace" => "App\Controllers"], function ($routes) {
 	$routes->get("/", "Users::index");
+	$routes->get("archive", "Users::archive");
+	$routes->get("unarchive_user", "Users::unarchive_user");
     $routes->get("users-datatable", "Users::users_datatable");
+    $routes->get("archives-datatable", "Users::archives_datatable");
     $routes->get("add_user", "Users::add_user");
     $routes->get("get_user", "Users::get_user");
     $routes->get("delete_user", "Users::delete_user");
 });
+
 $routes->group("dashboard", ["namespace" => "App\Controllers"], function ($routes) {
     $routes->get("log", "Dashboard::log");
     $routes->post("update_password", "Dashboard::update_password");
 });
+
 $routes->group("timesheet", ["namespace" => "App\Controllers"], function ($routes) {
 	$routes->get("/", "Timesheet::index");
 	$routes->get("timesheet-datatable", "Timesheet::timesheet_datatable");
@@ -54,6 +60,7 @@ $routes->group("timesheet", ["namespace" => "App\Controllers"], function ($route
     $routes->get("update_log", "Timesheet::update_log");
     $routes->get("add_timesheet", "Timesheet::add_timesheet");
 });
+
 $routes->group("login", ["namespace" => "App\Controllers"], function ($routes) {
 	$routes->get("/", "Login::index");
 	$routes->get("login", "Login::login");

@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
     <a href="index3.html" class="brand-link">
-        <img src="assets/images/delsanva.jpg" alt="DelsanVA Logo" class="brand-image elevation-3" style="opacity: .8">
+        <img src="<?= base_url() ?>/assets/images/delsanva.jpg" alt="DelsanVA Logo" class="brand-image elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Delsan VA</span>
     </a>
 
@@ -41,6 +41,12 @@
                     <li class="nav-item">
                         <a href="<?= base_url('users') ?>" class="nav-link <?= ($title == 'Users') ? 'active' : ''; ?>">
                             <i class="nav-icon fas fa-user"></i> <p> Staff </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="<?= base_url('users/archive') ?>" class="nav-link <?= ($title == 'Archive') ? 'active' : ''; ?>">
+                            <i class="nav-icon fas fa-archive"></i> <p> Archive </p>
                         </a>
                     </li>
                 <?php } ?>

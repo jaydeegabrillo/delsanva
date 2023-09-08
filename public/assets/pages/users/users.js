@@ -1,5 +1,7 @@
 $(document).ready(function(){
+    const origin = location.origin;
     var users_table = $("#users_table")
+    var archives_table = $("#archives_table")
 
     users_table.DataTable({
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -8,7 +10,20 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         order: [[0, "asc"]],
-        ajax: "users/users-datatable",
+        ajax: origin+"/users/users-datatable",
+        columnDefs: [
+            { targets: 0, orderable: false }, //first column is not orderable.
+        ]
+    });
+
+    archives_table.DataTable({
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        responsive: true,
+        pageLength: 50,
+        processing: true,
+        serverSide: true,
+        order: [[0, "asc"]],
+        ajax: origin+"/users/archives-datatable",
         columnDefs: [
             { targets: 0, orderable: false }, //first column is not orderable.
         ]
@@ -108,6 +123,47 @@ $(document).ready(function(){
         $('input[name="user_id"]').val(id);
     })
 
+    $(document).on('click','.unarchive_user', function(e){
+        e.preventDefault();
+
+        var id = $(this).data('id');
+
+        $('input[name="user_id"]').val(id);
+        bootbox.confirm({
+            title: "Unarchive User",
+            message: "Are you sure you want to unarchive this user?",
+            buttons: {
+                cancel: {
+                    label: ' Cancel'
+                },
+                confirm: {
+                    label: ' Save'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    $.ajax({
+                        type: 'get',
+                        url: '/users/unarchive_user',
+                        data: { 'id': id },
+                        success: function (result) {
+                            if (result) {
+                                Swal.fire('Success', 'User has been unarchived!', 'success');
+                            } else {
+                                Swal.fire('Error', 'There was an error on the website please try again later or contact administrator.', 'error');
+                            }
+
+                            archives_table.DataTable().ajax.reload();
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    });
+                }
+            }
+        });
+    })
+
     $(document).on('submit', '#delete_user_form', function(e){
         e.preventDefault();
 
@@ -118,9 +174,8 @@ $(document).ready(function(){
             url: '/users/delete_user',
             data: {'id': id},
             success: function (result) {
-                console.log(result);
                 if (result) {
-                    Swal.fire('Success', 'User has been deleted!', 'success');
+                    Swal.fire('Success', 'User has been archived!', 'success');
                 } else {
                     Swal.fire('Error', 'There was an error on the website please try again later or contact administrator.', 'error');
                 }
