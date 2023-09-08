@@ -139,6 +139,7 @@ $(document).ready(function(){
 
         var id = self.data('id');
         $('input').prop('disabled', false);
+        $('select').prop('disabled', false);
         $('.modal-title').html('Edit User');
         $('button[type="submit"]').prop('disabled',false);
 
