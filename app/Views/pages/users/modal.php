@@ -12,7 +12,7 @@
                     <h3>Personal Information</h3>
                     <div class="form-group">
                         <input type="hidden" name="id" class="id" value="">
-                        <input type="hidden" name="position_id" class="position_id" value="">
+                        <input type="hidden" name="position_id" class="position_id" value="3">
                         <div style="display:inline-block; width: 50%">
                             <label for="first_name">First Name</label>
                             <input type="text" name="first_name" class="form-control" value="">

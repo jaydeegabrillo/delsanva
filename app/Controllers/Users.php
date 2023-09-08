@@ -86,7 +86,7 @@ class Users extends BaseController
 
         unset($data['/users/add_user']);
 
-        $data['position_id'] = (!isset($data['position_id'])) ? 3 : $data['position_id'];
+        $data['position_id'] = ($data['position_id']) ? $data['position_id'] : 3;
         $data['check_location'] = (!isset($data['check_location'])) ? 0 : $data['check_location'];
         $data['date_added'] = date('Y-m-d H:i:s');
         
