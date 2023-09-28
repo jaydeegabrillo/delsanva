@@ -20,15 +20,18 @@ class Timesheet extends BaseController
 
     public function index()
     {
+        $data['id'] = $this->session->get('user_id');
         $data['title'] = 'Timesheet';
         $data['users'] = $this->db->table('users')->select('id, first_name, last_name')->where('deleted', 0)->get()->getResultArray();
         
         $script['js_scripts'] = array();
         array_push($script['js_scripts'], '/pages/timesheet/timesheet.js');
+        array_push($script['js_scripts'], '/pages/dashboard/dashboard.js');
 
         $path = array(
             'pages/timesheet/index',
             'pages/timesheet/modal',
+            'pages/dashboard/modal'
         );
 
         $this->load_view($data,$script,$path);

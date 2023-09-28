@@ -8,12 +8,14 @@ class Users extends BaseController
 
     public function index()
     {
+        $data['id'] = $this->session->get('user_id');
         $data['title'] = 'Users';
         $script['js_scripts'] = array();
         
         $path = array(
             'pages/users/index',
-            'pages/users/modal'
+            'pages/users/modal',
+            'pages/dashboard/modal'
         );
 
         array_push($script['js_scripts'], '/pages/users/users.js');
@@ -31,6 +33,7 @@ class Users extends BaseController
         );
 
         array_push($script['js_scripts'], '/pages/users/users.js');
+        array_push($script['js_scripts'], '/pages/dashboard/dashboard.js');
 
         $this->load_view($data,$script,$path);
     }
