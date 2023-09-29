@@ -110,7 +110,7 @@ $(document).ready(function(e){
 
         $.ajax({
             type: 'POST',
-            url: 'dashboard/update_password',
+            url: location.origin + '/dashboard/update_password',
             data: data,
             success: function (result) {
                 var alerts = JSON.parse(result);
