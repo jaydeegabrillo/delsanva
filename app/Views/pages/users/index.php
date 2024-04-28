@@ -26,7 +26,7 @@
                                     <button type="button" class="btn btn-success" name="button" data-toggle="modal" data-target="#add_user_modal">Add Staff</button>
                                 </div>
                             </div#>
-                            <div class="card-body">
+                            <div class="card-body" style="overflow-x:scroll;">
                                 <div id="users" class="dataTables_wrapper dt-bootstrap4">
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12">

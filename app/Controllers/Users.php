@@ -85,8 +85,8 @@ class Users extends BaseController
         $id = $this->request->getVar('id');
 
         if($id){
-            $result = $db->table('users u')->where('id', $id)->get()->getResult();
-
+            $result = $db->table('users u')->where('u.id', $id)->join('user_info as ui', 'u.id = ui.user_id', 'left')->get()->getResult();
+            
             echo ($result) ? json_encode($result[0]) : 0;
         }
     }
@@ -124,45 +124,72 @@ class Users extends BaseController
                 if($posted['password'] == ''){
                     unset($posted['password']);
                 } else {
-                    $data[$key] = openssl_encrypt($value, $cipher, $secret, $option, $iv);
+                    $data['user'][$key] = openssl_encrypt($value, $cipher, $secret, $option, $iv);
                 }
             }else{
-                $data[$key] = $value;
+                if($key == 'salary' || $key == 'sss' || $key == 'philhealth' || $key == 'pag-ibig' || $key == 'tax' || $key == 'tin'){
+                    $data['user_info'][$key] = $value;
+                } else {
+                    $data['user'][$key] = $value;
+                }
             }
         }
 
-        unset($data['/users/add_user']);
+        unset($data['user']['/users/add_user']);
 
-        $data['position_id'] = ($data['position_id']) ? $data['position_id'] : 3;
-        $data['check_location'] = (!isset($data['check_location'])) ? 0 : $data['check_location'];
-        $data['date_added'] = date('Y-m-d H:i:s');
+        $data['user']['position_id'] = ($data['user']['position_id']) ? $data['user']['position_id'] : 3;
+        $data['user']['check_location'] = (!isset($data['user']['check_location'])) ? 0 : $data['user']['check_location'];
+        $data['user']['date_added'] = date('Y-m-d H:i:s');
         
-        if(isset($data['id']) && $data['id'] != NULL){
-            $result = $db->table('users')->where('id', $data['id'])->update($data);
+        if(isset($data['user']['id']) && $data['user']['id'] != NULL){
+            $result = $db->table('users')->where('id', $data['user']['id'])->update($data['user']);
 
             if($result){
-                $alert = array(
-                    'header' => 'Success!',
-                    'message' => 'User has been updated!',
-                    'type' => 'success'
-                );
+                $update_user_info = $db->table('user_info')->where('user_id', $data['user']['id'])->update($data['user_info']);
+                
+                if($update_user_info){
+                    $alert = array(
+                        'header' => 'Success!',
+                        'message' => 'User has been updated!',
+                        'type' => 'success'
+                    );
+                } else {
+                    $alert = array(
+                        'header' => 'Oops!',
+                        'message' => 'Something went wrong...',
+                        'type' => 'error'
+                    ); 
+                }
+                
             }else{
                 $alert = array(
                     'header' => 'Oops!',
                     'message' => 'Something went wrong...',
                     'type' => 'error'
-                );
+                ); 
             }
         } else {
-            unset($data['id']);
-            $result = $db->table('users')->insert($data);
+            unset($data['user']['id']);
+            $result = $db->table('users')->insert($data['user']);
 
             if($result){
-                $alert = array(
-                    'header' => 'Success!',
-                    'message' => 'User has been added!',
-                    'type' => 'success'
-                );
+                $data['user_info']['user_id'] = $db->insertID();
+                $add_user_info = $db->table('user_info')->insert($data['user_info']);
+
+                if($add_user_info){
+                    $alert = array(
+                        'header' => 'Success!',
+                        'message' => 'User has been added!',
+                        'type' => 'success'
+                    );
+                } else {
+                    $alert = array(
+                        'header' => 'Oops!',
+                        'message' => 'Something went wrong...',
+                        'type' => 'error'
+                    );
+                }
+                
             }else{
                 $alert = array(
                     'header' => 'Oops!',

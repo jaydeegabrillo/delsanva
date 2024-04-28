@@ -8,7 +8,7 @@
                 </button>
             </div>
             <form class="" id="add_user_form" action="javascript:(0);">
-                <div class="modal-body">
+                <div class="modal-body" style="overflow-y:scroll; max-height:700px">
                     <h3>Personal Information</h3>
                     <div class="form-group">
                         <input type="hidden" name="id" class="id" value="">
@@ -43,8 +43,44 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" name="check_location" class="" value="1"> 
+                        <input type="checkbox" name="check_location" class="" value="1">
                         <label for="check_location">Check Location</label>
+                    </div>
+                    <hr>
+                    <h3>Salary</h3>
+                    <label for="">Employee Income</label>
+                    <div class="form-group">
+                        <div style="display:inline-block; width: 50%">
+                            <label for="salary">Salary</label>
+                            <input type="number" name="salary" class="form-control">
+                        </div>
+                    </div>
+                    <h4><em>Contributions</em></h4>
+                    <div class="form-group">
+                        <div style="display:inline-block; width: 50%">
+                            <label for="sss">SSS</label>
+                            <input type="text" name="sss" class="form-control" />
+                        </div>
+                        <div style="display:inline-block; width: 49%">
+                            <label for="philhealth">Philhealth</label>
+                            <input type="text" name="philhealth" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div style="display:inline-block; width: 50%">
+                            <label for="pag-ibig">Pag-ibig</label>
+                            <input type="text" name="pag-ibig" class="form-control" />
+                        </div>
+                        <div style="display:inline-block; width: 49%">
+                            <label for="tax">Tax</label>
+                            <input type="text" name="tax" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div style="display:inline-block; width: 50%">
+                            <label for="tin">Tin</label>
+                            <input type="text" name="tin" class="form-control" />
+                        </div>
                     </div>
                     <hr>
                     <h3>Address</h3>
