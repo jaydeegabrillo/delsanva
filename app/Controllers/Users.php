@@ -8,8 +8,12 @@ class Users extends BaseController
 
     public function index()
     {
+        $db = db_connect();
         $data['id'] = $this->session->get('user_id');
         $data['title'] = 'Users';
+        $data['departments'] = $db->table('department')->get()->getResult();
+        $data['roles'] = $db->table('roles')->get()->getResult();
+        
         $script['js_scripts'] = array();
         
         $path = array(

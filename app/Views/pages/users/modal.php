@@ -12,7 +12,6 @@
                     <h3>Personal Information</h3>
                     <div class="form-group">
                         <input type="hidden" name="id" class="id" value="">
-                        <input type="hidden" name="position_id" class="position_id" value="3">
                         <div style="display:inline-block; width: 50%">
                             <label for="first_name">First Name</label>
                             <input type="text" name="first_name" class="form-control" value="">
@@ -40,6 +39,17 @@
                         <div style="display:inline-block; width: 49%">
                             <label for="password">Password</label>
                             <input type="password" name="password" class="form-control" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div style="display:inline-block; width: 49%">
+                            <label for="position_id">Role</label>
+                            <select name="position_id" class="form-control" required>
+                                <option value=""></option>
+                                <?php foreach ($roles as $role) { ?>
+                                    <option value="<?php echo $role->id ?>"><?php echo $role->role_name ?></option>
+                                <?php } ?>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
