@@ -28,7 +28,7 @@ $(document).ready(function(e){
                 success: function (result) {
                     if (result == 'true') {
                         var now = new Date();
-                        var time = now.toLocaleTimeString([], { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit', hourCycle: 'h12', timeZone: 'America/Chicago' });
+                        var time = now.toLocaleTimeString([], { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit', hourCycle: 'h12', timeZone: 'Asia/Manila' });
                         const [hours, minutes, seconds, ampm] = time.split(/:|\s/);
 
                         var curtime = hours + ":" + minutes + " " + ampm;
@@ -196,7 +196,7 @@ function formatAMPM(date) {
 //for clock
 function updateTime() {
   const now = new Date();
-  const time = now.toLocaleTimeString([], { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit', hourCycle: 'h12', timeZone: 'America/Chicago' });
+  const time = now.toLocaleTimeString([], { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit', hourCycle: 'h12', timeZone: 'Asia/Manila' });
   const [hours, minutes, seconds, ampm] = time.split(/:|\s/);
 
   document.querySelector('.hours').textContent = hours;
