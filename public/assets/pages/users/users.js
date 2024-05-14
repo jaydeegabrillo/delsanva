@@ -142,7 +142,6 @@ $(document).ready(function(){
         // For Tax
         let tax_deduction = 0;
         tax_deduction = get_tax_contribution(salary)
-        console.log(tax_deduction);
         $("input[name='tax']").val(tax_deduction)
     })
 
@@ -384,8 +383,6 @@ function get_sss_contribution(salary) {
 
 function get_tax_contribution(salary){
     var tax_deduction = 0;
-    // var total_contribution = sss_deduction + pag_ibig + philhealth_deduction;
-    // var taxable_income = salary - total_contribution;
 
     if (salary >= 20833 && salary <= 33332) {
         tax_deduction = (salary - 20833) * 0.15;
