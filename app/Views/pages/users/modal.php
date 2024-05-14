@@ -52,36 +52,36 @@
                     <div class="form-group">
                         <div style="display:inline-block; width: 50%">
                             <label for="salary">Salary</label>
-                            <input type="number" name="salary" class="form-control">
+                            <input type="number" name="salary" id="salary" class="form-control">
                         </div>
                     </div>
                     <h4><em>Contributions</em></h4>
                     <div class="form-group">
                         <div style="display:inline-block; width: 50%">
                             <label for="sss">SSS</label>
-                            <input type="text" name="sss" class="form-control" />
+                            <input type="text" name="sss" class="form-control" readonly />
                         </div>
                         <div style="display:inline-block; width: 49%">
                             <label for="philhealth">Philhealth</label>
-                            <input type="text" name="philhealth" class="form-control" />
+                            <input type="text" name="philhealth" class="form-control" readonly />
                         </div>
                     </div>
                     <div class="form-group">
                         <div style="display:inline-block; width: 50%">
                             <label for="pag-ibig">Pag-ibig</label>
-                            <input type="text" name="pag-ibig" class="form-control" />
+                            <input type="text" name="pag-ibig" class="form-control" readonly />
                         </div>
                         <div style="display:inline-block; width: 49%">
                             <label for="tax">Tax</label>
-                            <input type="text" name="tax" class="form-control" />
+                            <input type="text" name="tax" class="form-control" readonly />
                         </div>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <div style="display:inline-block; width: 50%">
                             <label for="tin">Tin</label>
                             <input type="text" name="tin" class="form-control" />
                         </div>
-                    </div>
+                    </div> -->
                     <hr>
                     <h3>Address</h3>
                     <label>Country</label>
