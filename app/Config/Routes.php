@@ -69,6 +69,11 @@ $routes->group("login", ["namespace" => "App\Controllers"], function ($routes) {
     $routes->get("send_forgot_password", "Login::send_forgot_password");
 });
 
+$routes->group("leaves", ["namespace" => "App\Controllers"], function ($routes) {
+    $routes->get("/", "Leaves::index");
+    $routes->post("apply_leave", "Leaves::apply_leave");
+});
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

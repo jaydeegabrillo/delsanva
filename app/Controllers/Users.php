@@ -85,7 +85,7 @@ class Users extends BaseController
         $id = $this->request->getVar('id');
 
         if($id){
-            $result = $db->table('users u')->where('u.id', $id)->join('user_info as ui', 'u.id = ui.user_id', 'left')->get()->getResult();
+            $result = $db->table('users u')->select('u.*, ui.salary, ui.sss, ui.philhealth, ui.pag-ibig, ui.tax, ui.tin, ui.sick_leave, ui.vacation_leave')->where('u.id', $id)->join('user_info as ui', 'u.id = ui.user_id', 'left')->get()->getResult();
             
             echo ($result) ? json_encode($result[0]) : 0;
         }
@@ -127,7 +127,7 @@ class Users extends BaseController
                     $data['user'][$key] = openssl_encrypt($value, $cipher, $secret, $option, $iv);
                 }
             }else{
-                if($key == 'salary' || $key == 'sss' || $key == 'philhealth' || $key == 'pag-ibig' || $key == 'tax' || $key == 'tin'){
+                if($key == 'salary' || $key == 'sss' || $key == 'philhealth' || $key == 'pag-ibig' || $key == 'tax' || $key == 'tin' || $key == 'sick_leave' || $key == 'vacation_leave'){
                     $data['user_info'][$key] = $value;
                 } else {
                     $data['user'][$key] = $value;
@@ -139,13 +139,22 @@ class Users extends BaseController
 
         $data['user']['position_id'] = ($data['user']['position_id']) ? $data['user']['position_id'] : 3;
         $data['user']['check_location'] = (!isset($data['user']['check_location'])) ? 0 : $data['user']['check_location'];
-        $data['user']['date_added'] = date('Y-m-d H:i:s');
+        $data['user']['date_added'] = (!isset($data['user']['date_added'])) ? date('Y-m-d H:i:s') : $data['user']['date_added'];
+        $data['user_info']['user_id'] = $data['user']['id'];
+        $data['user_info']['sick_leave'] = (!$data['user_info']['sick_leave']) ? 10 : $data['user_info']['sick_leave'];
+        $data['user_info']['vacation_leave'] = (!$data['user_info']['vacation_leave']) ? 10 : $data['user_info']['vacation_leave'];
         
         if(isset($data['user']['id']) && $data['user']['id'] != NULL){
             $result = $db->table('users')->where('id', $data['user']['id'])->update($data['user']);
 
             if($result){
-                $update_user_info = $db->table('user_info')->where('user_id', $data['user']['id'])->update($data['user_info']);
+                $check_user_info = $db->table('user_info')->where('user_id', $data['user']['id'])->get()->getResult();
+                
+                if($check_user_info){
+                    $update_user_info = $db->table('user_info')->where('user_id', $data['user']['id'])->update($data['user_info']);
+                } else {
+                    $update_user_info = $db->table('user_info')->where('user_id', $data['user']['id'])->insert($data['user_info']);
+                }
                 
                 if($update_user_info){
                     $alert = array(

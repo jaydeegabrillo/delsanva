@@ -56,6 +56,12 @@
                         <i class="nav-icon fa fa-hourglass"></i> <p> Timesheet </p>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a href="<?= base_url('leaves') ?>" class="nav-link <?= ($title == 'Leaves') ? 'active' : ''; ?>">
+                        <i class="nav-icon fa fa-plane"></i> <p> Leaves </p>
+                    </a>
+                </li>
             </ul>
         </nav>
 
