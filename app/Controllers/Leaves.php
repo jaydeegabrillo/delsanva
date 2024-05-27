@@ -45,7 +45,7 @@ class Leaves extends BaseController
     }
 
     public function leave_requests(){
-        
+
         $data['title'] = 'Leaves';
         $script['js_scripts'] = array();
         $script['css_scripts'] = array();
@@ -59,10 +59,6 @@ class Leaves extends BaseController
     }
 
     public function apply_leave() {
-        echo "<pre>";
-        print_r("Eget");
-        echo "</pre>";
-        exit;
         $id = $this->session->get('user_id');
 
         $request = $this->request->getVar();
@@ -99,7 +95,7 @@ class Leaves extends BaseController
 
     public function leave_requests_datatable(){
         $db = db_connect();
-        
+
         $builder =  $db->table('leaves')
                     ->select('leaves.id, CONCAT(users.first_name, " ", users.last_name) as full_name, type, date_from, date_to, status, reason')
                     ->join('users', 'users.id = leaves.user_id', 'left');
@@ -116,7 +112,7 @@ class Leaves extends BaseController
         }
 
         $builder->orderBy('leaves.id', 'DESC');
-        
+
         return DataTable::of($builder)
         ->edit('date_from', function($row) {
             return date('M d, Y', strtotime($row->date_from));
