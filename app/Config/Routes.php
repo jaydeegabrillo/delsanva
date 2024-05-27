@@ -71,7 +71,10 @@ $routes->group("login", ["namespace" => "App\Controllers"], function ($routes) {
 
 $routes->group("leaves", ["namespace" => "App\Controllers"], function ($routes) {
     $routes->get("/", "Leaves::index");
+    $routes->get("leave_requests", "Leaves::leave_requests");
+    $routes->get("leave-requests-datatable", "Leaves::leave_requests_datatable");
     $routes->post("apply_leave", "Leaves::apply_leave");
+    $routes->get("update-leave-status", "Leaves::update_leave_status");
 });
 
 /*

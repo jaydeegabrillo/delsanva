@@ -58,9 +58,19 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="<?= base_url('leaves') ?>" class="nav-link <?= ($title == 'Leaves') ? 'active' : ''; ?>">
-                        <i class="nav-icon fa fa-plane"></i> <p> Leaves </p>
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fa fa-plane"></i> <p> Leaves </p><i class="right fas fa-angle-left"></i>
                     </a>
+                    <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
+                            <a href="<?= base_url('leaves') ?>" class="nav-link <?= ($title == 'Leaves') ? 'active' : ''; ?>"> <i class="far fa-circle nav-icon"></i> <p>File</p> </a>
+                        </li>
+                        <?php if($position_id == 1){ ?>
+                            <li>
+                                <a href="<?= base_url('leaves/leave_requests') ?>" class="nav-link <?= ($title == 'Leave_requests') ? 'active' : ''; ?>"> <i class="far fa-circle nav-icon"></i> <p>Leave Requests</p> </a>
+                            </li>
+                        <?php } ?>
+                    </ul>
                 </li>
             </ul>
         </nav>
