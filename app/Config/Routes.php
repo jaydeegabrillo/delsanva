@@ -77,6 +77,14 @@ $routes->group("leaves", ["namespace" => "App\Controllers"], function ($routes) 
     $routes->get("update-leave-status", "Leaves::update_leave_status");
 });
 
+$routes->group("overtime", ["namespace" => "App\Controllers"], function($routes) {
+    $routes->get("/", "Overtime::index");
+    $routes->get("ot_requests", "Overtime::ot_requests");
+    $routes->get("overtime-requests-datatable", "Overtime::overtime_requests_datatable");
+    $routes->post("apply_ot", "Overtime::apply_ot");
+    $routes->post("update-ot-status", "Overtime::update_ot_status");
+});
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

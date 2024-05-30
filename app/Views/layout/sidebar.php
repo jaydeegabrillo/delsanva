@@ -72,6 +72,22 @@
                         <?php } ?>
                     </ul>
                 </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fa-solid fa-hourglass-start"></i> <p> OT </p><i class="right fas fa-angle-left"></i>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
+                            <a href="<?= base_url('overtime') ?>" class="nav-link <?= ($title == 'Overtime') ? 'active' : ''; ?>"> <i class="far fa-circle nav-icon"></i> <p>File</p> </a>
+                        </li>
+                        <?php if($position_id == 1){ ?>
+                            <li>
+                                <a href="<?= base_url('overtime/ot_requests') ?>" class="nav-link <?= ($title == 'Overtime_requests') ? 'active' : ''; ?>"> <i class="far fa-circle nav-icon"></i> <p>Overtime Requests</p> </a>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </li>
             </ul>
         </nav>
 
