@@ -32,46 +32,63 @@
             <ul class="nav nav-pills nav-sidebar flex-column nav-legacy" data-widget="treeview" role="menu" data-accordion="false">
 
                 <li class="nav-item">
-                    <a href="<?= base_url() ?>" class="nav-link <?= ($title == 'Dashboard') ? 'active' : '' ; ?>">
-                        <i class="nav-icon fas fa-tachometer"></i> <p> Dashboard </p>
+                    <a href="<?= base_url() ?>" class="nav-link <?= ($title == 'Dashboard') ? 'active' : ''; ?>">
+                        <i class="nav-icon fas fa-tachometer"></i>
+                        <p> Dashboard </p>
                     </a>
                 </li>
 
-                <?php if($position_id == 1){ ?>
+                <?php if ($position_id == 1) { ?>
                     <li class="nav-item">
                         <a href="<?= base_url('users') ?>" class="nav-link <?= ($title == 'Users') ? 'active' : ''; ?>">
-                            <i class="nav-icon fas fa-user"></i> <p> Staff </p>
+                            <i class="nav-icon fas fa-user"></i>
+                            <p> Staff </p>
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="<?= base_url('users/archive') ?>" class="nav-link <?= ($title == 'Archive') ? 'active' : ''; ?>">
-                            <i class="nav-icon fas fa-archive"></i> <p> Archive </p>
+                            <i class="nav-icon fas fa-archive"></i>
+                            <p> Archive </p>
                         </a>
                     </li>
                 <?php } ?>
 
                 <li class="nav-item">
                     <a href="<?= base_url('timesheet') ?>" class="nav-link <?= ($title == 'Timesheet') ? 'active' : ''; ?>">
-                        <i class="nav-icon fa fa-hourglass"></i> <p> Timesheet </p>
+                        <i class="nav-icon fa fa-hourglass"></i>
+                        <p> Timesheet </p>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fa fa-plane"></i> <p> Leaves </p><i class="right fas fa-angle-left"></i>
+                        <i class="nav-icon fa fa-plane"></i>
+                        <p> Leaves </p><i class="right fas fa-angle-left"></i>
                     </a>
                     <ul class="nav nav-treeview" style="display: none;">
                         <li class="nav-item">
-                            <a href="<?= base_url('leaves') ?>" class="nav-link <?= ($title == 'Leaves') ? 'active' : ''; ?>"> <i class="far fa-circle nav-icon"></i> <p>File</p> </a>
+                            <a href="<?= base_url('leaves') ?>" class="nav-link <?= ($title == 'Leaves') ? 'active' : ''; ?>"> <i class="far fa-circle nav-icon"></i>
+                                <p>File</p>
+                            </a>
                         </li>
-                        <?php if($position_id == 1){ ?>
+                        <?php if ($position_id == 1) { ?>
                             <li>
-                                <a href="<?= base_url('leaves/leave_requests') ?>" class="nav-link <?= ($title == 'Leave_requests') ? 'active' : ''; ?>"> <i class="far fa-circle nav-icon"></i> <p>Leave Requests</p> </a>
+                                <a href="<?= base_url('leaves/leave_requests') ?>" class="nav-link <?= ($title == 'Leave_requests') ? 'active' : ''; ?>"> <i class="far fa-circle nav-icon"></i>
+                                    <p>Leave Requests</p>
+                                </a>
                             </li>
                         <?php } ?>
                     </ul>
                 </li>
+
+                <li class="nav-item">
+                    <a href="<?= base_url('payslip') ?>" class="nav-link <?= ($title == 'Payslip') ? 'active' : ''; ?>">
+                        <i class="nav-icon fa-solid fa-money-bill-wave"></i>
+                        <p> Payslip </p>
+                    </a>
+                </li>
+
             </ul>
         </nav>
 
@@ -81,26 +98,26 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
-<div class="wrapper">
+    <div class="wrapper">
 
-    <div class="preloader flex-column justify-content-center align-items-center">
-        <!-- <img class="animation__shake" src="assets/images/delsanva.jpg" alt="DelsanVA Logo" style="height:100; min-width:100; width:100%;"> -->
-    </div>
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <!-- <img class="animation__shake" src="assets/images/delsanva.jpg" alt="DelsanVA Logo" style="height:100; min-width:100; width:100%;"> -->
+        </div>
 
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
 
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-            </li>
-        </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+            </ul>
 
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link update_password" href="javascript:void(0)" data-toggle="modal" data-target="#update_password_modal" >Update Password <i class="fa fa-lock"></i></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('login/logout') ?>">Logout <i class="fa fa-sign-out"></i></a>
-            </li>
-        </ul>
-    </nav>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link update_password" href="javascript:void(0)" data-toggle="modal" data-target="#update_password_modal">Update Password <i class="fa fa-lock"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= base_url('login/logout') ?>">Logout <i class="fa fa-sign-out"></i></a>
+                </li>
+            </ul>
+        </nav>

@@ -77,6 +77,10 @@ $routes->group("leaves", ["namespace" => "App\Controllers"], function ($routes) 
     $routes->get("update-leave-status", "Leaves::update_leave_status");
 });
 
+$routes->group("payslip", ["namespace" => "App\Controllers"], function ($routes) {
+    $routes->get("/", "Payslip::index");
+});
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
