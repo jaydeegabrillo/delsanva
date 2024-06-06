@@ -79,6 +79,8 @@ $routes->group("leaves", ["namespace" => "App\Controllers"], function ($routes) 
 
 $routes->group("payslip", ["namespace" => "App\Controllers"], function ($routes) {
     $routes->get("/", "Payslip::index");
+    $routes->get("payslips-datatable", "Payslip::pasylips_datatable");
+    $routes->get("payslip-details/(:num)", "Payslip::payslip_details");
 });
 
 /*

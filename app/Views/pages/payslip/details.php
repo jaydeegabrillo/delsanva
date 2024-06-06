@@ -8,7 +8,8 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Payslip</li>
+                            <li class="breadcrumb-item">Payslip</li>
+                            <li class="breadcrumb-item active">Payslip Details</li>
                         </ol>
                     </div>
                 </div>
@@ -21,7 +22,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Payslip</h3>
+                                <h3 class="card-title"><?= $title ?></h3>
                                 <div class="text-right">
                                     <!-- <button type="button" class="btn btn-success" name="button" data-toggle="modal" data-target="#add_payslip_modal"><i class="fa fa-plus"></i> Add Timesheet</button> -->
                                 </div>
@@ -31,19 +32,22 @@
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12">
                                             <div class="dataTables_wrapper dt-bootstrap4">
-                                                <table id="payslips_table" class="table table-bordered table-hover dataTable dtr-inline">
+                                                <table id="payslip_details_table" class="table table-bordered table-hover dataTable dtr-inline">
                                                     <thead>
                                                         <tr>
-                                                            <th>ID</th>
-                                                            <th>Payroll Date</th>
-                                                            <th>From</th>
-                                                            <th>To</th>
-                                                            <th>Net</th>
-                                                            <th>Gross</th>
-                                                            <th>Action</th>
+                                                            <th>Base Pay Type</th>
+                                                            <th>Date</th>
+                                                            <th>Hours</th>
+                                                            <th>Amount</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                        <tr>
+                                                            <td>Total Hours Worked</td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
