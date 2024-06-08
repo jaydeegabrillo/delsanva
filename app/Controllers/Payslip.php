@@ -39,8 +39,8 @@ class Payslip extends BaseController
 
         $id = $this->request->uri->getSegment(3);
         $db = db_connect();
-        $date_start = '2024-03-05';
-        $date_end = '2024-03-20';
+        $date_start = '2024-05-20 00:00:00';
+        $date_end = '2024-06-05 00:00:00';
         $user_details = $db->table('user_info')->where(['user_id' => $id])->get()->getRow();
         $payroll_period = $db->table('attendance')->where(['user_id' => $id, 'date >=' => $date_start, 'date <=' => $date_end])->get()->getResult();
 
