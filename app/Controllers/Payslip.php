@@ -42,15 +42,46 @@ class Payslip extends BaseController
         $date_start = '2024-05-20 00:00:00';
         $date_end = '2024-06-05 00:00:00';
         $user_details = $db->table('user_info')->where(['user_id' => $id])->get()->getRow();
-        $payroll_period = $db->table('attendance')->where(['user_id' => $id, 'date >=' => $date_start, 'date <=' => $date_end])->get()->getResult();
+        $payroll_period = $db->table('attendance')->join('user_info', 'user_info.user_id = attendance.user_id')->join('overtime', 'overtime.date = attendance.date', 'left')->where(['attendance.user_id' => $id, 'attendance.date >=' => $date_start, 'attendance.date <=' => $date_end])->groupBy('attendance.date')->orderBy('attendance.date ASC')->get()->getResult();
 
-        echo "<pre>";
-        print_r($payroll_period);
-        echo "</pre>";
-        exit;
+        $data['vacation_leaves'] = 0;
+        $data['sick_leaves'] = 0;
+        $data['unpaid_leaves'] = 0;
+        $data['holidays'] = 0;
+
+        $leaves = $db->table('leaves')->where(['user_id' => $id, 'date_from >=', $date_start, 'date_to <=', $date_end, 'status' => 1])->get()->getResult();
+        
+        foreach ($leaves as $leave) {
+        
+        }
+        
+        
+        // Earnings and Deductions
+        $earnings = $user_details->salary/2;
+        $deductions = ($user_details->tax / 2) + ($user_details->sss / 2) + ($user_details->philhealth / 2) + ($user_details->{'pag-ibig'} / 2);
+
+        $data['hours'] = 0;
+        $data['total_deductions'] = $deductions;
+        $data['total_earnings'] = $earnings;
+        $data['net_pay'] = $earnings - $deductions;
+        
+        foreach ($payroll_period as $payroll_detail) {
+            $time_start = $payroll_detail->time_start;
+            $time_end = $payroll_detail->time_end;
+
+            if($time_start == '' && $time_end == ''){
+                $data['hours'] += 8;
+            } else {
+                $start_ot = strtotime($time_start);
+                $end_ot = strtotime($time_end);
+                $data['hours'] += round(abs($end_ot - $start_ot) / 3600,2) + 8;
+            }
+        }
 
         $data['id'] = $id;
         $data['title'] = 'Payslip Details';
+        $data['user_details'] = $user_details;
+        $data['payroll_details'] = $payroll_period;
 
         $script['js_scripts'] = array();
         $script['css_scripts'] = array();
