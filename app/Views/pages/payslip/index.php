@@ -38,8 +38,6 @@
                                                             <th>Payroll Date</th>
                                                             <th>From</th>
                                                             <th>To</th>
-                                                            <th>Net</th>
-                                                            <th>Gross</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>

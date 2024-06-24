@@ -30,7 +30,7 @@
                             <div class="card-body">
                                 <div id="payslip" class="dataTables_wrapper dt-bootstrap4">
                                     <div class="row">
-                                        <div class="col-sm-12 col-md-12">
+                                        <div class="col-sm-6 col-md-6">
                                             <div class="dataTables_wrapper dt-bootstrap4">
                                                 <h3>Earnings</h3>
                                                 <table id="payslip_details_table" class="table table-bordered table-hover dataTable dtr-inline">
@@ -46,25 +46,19 @@
                                                         <tr>
                                                             <td>Vacation Leave</td>
                                                             <td></td>
-                                                            <td></td>
+                                                            <td><?= $vacation_hours ?></td>
                                                             <td><?= $vacation_leaves ?></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Sick Leave</td>
                                                             <td></td>
-                                                            <td></td>
+                                                            <td><?= $sick_hours ?></td>
                                                             <td><?= $sick_leaves ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Unpaid Leave</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td><?= $unpaid_leaves ?></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Holidays</td>
                                                             <td></td>
-                                                            <td></td>
+                                                            <td><?= $holiday_hours ?></td>
                                                             <td><?= $holidays ?></td>
                                                         </tr>
                                                         <tr>
@@ -81,49 +75,55 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-
-                                                <hr>
-
-                                                <h3>Deductions</h3>
-
-                                                <table id="deductions_table" class="table table-bordered table-hover dataTable dtr-inline">
-                                                    <thead>
-                                                        <tr>
-                                                            <th colspan="2">Deduction Type</th>
-                                                            <th>Amount</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="2">Witholding Tax</td>
-                                                            <td><?= "₱ " . number_format($user_details->tax / 2) ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2">SSS</td>
-                                                            <td><?= "₱ " . number_format($user_details->sss / 2) ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2">Philhealth</td>
-                                                            <td><?= "₱ " . number_format($user_details->philhealth / 2) ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2">HDMF</td>
-                                                            <td><?= "₱ " . number_format($user_details->{'pag-ibig'} / 2) ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2"><strong>Total Deductions</strong></td>
-                                                            <td><?= "₱ " . number_format($total_deductions ) ?></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-
-                                                <hr>
-
-                                                <div>
-                                                    <div>Net Pay</div>
-                                                    <div><?= "₱ " . number_format($net_pay) ?></div>
-                                                </div>
                                             </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6">
+                                            <h3>Deductions</h3>
+
+                                            <table id="deductions_table" class="table table-bordered table-hover dataTable dtr-inline">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="2">Deduction Type</th>
+                                                        <th>Amount</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="2">Withholding Tax</td>
+                                                        <td><?= "₱ " . number_format($user_details->tax / 2) ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">SSS</td>
+                                                        <td><?= "₱ " . number_format($user_details->sss / 2) ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">Philhealth</td>
+                                                        <td><?= "₱ " . number_format($user_details->philhealth / 2) ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">HDMF</td>
+                                                        <td><?= "₱ " . number_format($user_details->{'pag-ibig'} / 2) ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Unpaid Leave</td>
+                                                        <td><?= $unpaid_leave_hours ?></td>
+                                                        <td><?= "₱ " . number_format($unpaid_leaves) ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"><strong>Total Deductions</strong></td>
+                                                        <td><?= "₱ " . number_format($total_deductions ) ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"><strong>Net Pay</strong></td>
+                                                        <td><?= "₱ " . number_format($net_pay) ?></td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot style="border:none">
+                                                    <td colspan="3" class="text-right">
+                                                        <a href="<?= base_url("payslip/payslip-details/{$id}/payslip-pdf") ?>" target="_blank"><button class="btn btn-primary">Download PDF</button></a>
+                                                    </td>
+                                                </tfoot>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

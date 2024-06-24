@@ -34,37 +34,53 @@ class Payslip extends BaseController
         $this->load_view($data, $script, $path);
     }
 
-    public function payslip_details(){
+    public function get_payslip_data(){
         helper('url');
 
         $id = $this->request->uri->getSegment(3);
         $db = db_connect();
-        $date_start = '2024-05-20 00:00:00';
-        $date_end = '2024-06-05 00:00:00';
-        $user_details = $db->table('user_info')->where(['user_id' => $id])->get()->getRow();
-        $payroll_period = $db->table('attendance')->join('user_info', 'user_info.user_id = attendance.user_id')->join('overtime', 'overtime.date = attendance.date', 'left')->where(['attendance.user_id' => $id, 'attendance.date >=' => $date_start, 'attendance.date <=' => $date_end])->groupBy('attendance.date')->orderBy('attendance.date ASC')->get()->getResult();
+        $date_start = '2024-05-16 00:00:00';
+        $date_end = '2024-05-31 00:00:00';
 
-        $data['vacation_leaves'] = 0;
-        $data['sick_leaves'] = 0;
-        $data['unpaid_leaves'] = 0;
+        $absences = $this->checkWeeks($date_start, $date_end, $id);
+        $user_details = $db->table('user_info')->where(['user_id' => $id])->get()->getRow();
+        $payroll_period = $db->table('attendance')->join('user_info', 'user_info.user_id = attendance.user_id')->join('overtime', 'overtime.date = attendance.date', 'left')->where(['attendance.user_id' => $id, 'attendance.date >=' => $date_start, 'attendance.date <=' => $date_end])->get()->getResult();
+
+        $data['vacation_hours'] = 0;
+        $data['sick_hours'] = 0;
         $data['holidays'] = 0;
 
-        $leaves = $db->table('leaves')->where(['user_id' => $id, 'date_from >=', $date_start, 'date_to <=', $date_end, 'status' => 1])->get()->getResult();
-        
+        $leaves = $db->table('leaves')->where(['user_id' => $id, 'date_from >=' => $date_start, 'date_to <=' => $date_end, 'status' => 1])->get()->getResult();
+
         foreach ($leaves as $leave) {
-        
+            $date_from = $leave->date_from;
+            $date_to = $leave->date_to;
+            $diff = strtotime($date_from) - strtotime($date_to);
+            $days = abs(round($diff / 86400));
+            $hours_rendered = ($days + 1) * 8;
+
+            if($leave->type == 'sick_leave') {
+                $data['sick_hours'] += $hours_rendered;
+            } else {
+                $data['vacation_hours'] += $hours_rendered;
+            }
         }
-        
-        
+
         // Earnings and Deductions
         $earnings = $user_details->salary/2;
-        $deductions = ($user_details->tax / 2) + ($user_details->sss / 2) + ($user_details->philhealth / 2) + ($user_details->{'pag-ibig'} / 2);
+        $hourly_rate = $earnings / 80;
+        $deductions = ($user_details->tax / 2) + ($user_details->sss / 2) + ($user_details->philhealth / 2) + ($user_details->{'pag-ibig'} / 2) + ($absences * $hourly_rate);
 
         $data['hours'] = 0;
+        $data['unpaid_leaves'] = $absences * $hourly_rate;
+        $data['vacation_leaves'] = $data['vacation_hours'] * $hourly_rate;
+        $data['sick_leaves'] = $data['sick_hours'] * $hourly_rate;
+        $data['total_earnings'] = $earnings + $data['vacation_leaves'] + $data['sick_leaves'];
+        $data['net_pay'] = $data['total_earnings'] - $deductions;
+        $data['unpaid_leave_hours'] = $absences;
+        $data['holiday_hours'] = 0;
         $data['total_deductions'] = $deductions;
-        $data['total_earnings'] = $earnings;
-        $data['net_pay'] = $earnings - $deductions;
-        
+
         foreach ($payroll_period as $payroll_detail) {
             $time_start = $payroll_detail->time_start;
             $time_end = $payroll_detail->time_end;
@@ -83,6 +99,12 @@ class Payslip extends BaseController
         $data['user_details'] = $user_details;
         $data['payroll_details'] = $payroll_period;
 
+        return $data;
+    }
+
+    public function payslip_details(){
+        $data = $this->get_payslip_data();
+
         $script['js_scripts'] = array();
         $script['css_scripts'] = array();
         array_push($script['js_scripts'], '/pages/payslip/payslip.js');
@@ -93,11 +115,63 @@ class Payslip extends BaseController
         $this->load_view($data, $script, $path);
     }
 
+    public function checkWeeks($start_date, $end_date, $id){
+        $db = db_connect();
+        $date_from = strtotime($start_date);
+        $date_to = strtotime($end_date);
+
+        if ($date_from > $date_to) {
+            $temp = $date_from;
+            $date_from = $date_to;
+            $date_to = $temp;
+        }
+
+        // Loop through each day between the two dates
+        $current_timestamp = $date_from;
+        $absents = 0;
+
+        while ($current_timestamp <= $date_to) {
+            // Get the day of the week for the current timestamp
+            $day_of_week = date('l', $current_timestamp);
+
+            if($day_of_week !== 'Saturday' && $day_of_week !== 'Sunday'){
+                // $absents[] = $day_of_week;
+                $has_attendance = $db->table('attendance')->where(['date' => date("Y-m-d", $current_timestamp), 'user_id' => $id])->get()->getRow();
+
+                if(!$has_attendance){
+                    $absents += 8;
+                }
+            }
+
+            // Move to the next day
+            $current_timestamp = strtotime('+1 day', $current_timestamp);
+        }
+
+        return $absents;
+    }
+
+    public function payslip_pdf(){
+        $imagePath = base_url().'assets/images/delsanva.jpg';
+        $type = pathinfo($imagePath, PATHINFO_EXTENSION);
+        $data = file_get_contents($imagePath);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        $data = $this->get_payslip_data();
+        $data['image'] = $base64;
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml(view('\App\Views\pages\payslip\details_pdf', $data));
+        // $dompdf->set_option("enable_remote", true);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        $dompdf->stream("payslip_report", array("Attachment" => 0));
+        exit(0);
+    }
+
     public function pasylips_datatable(){
         $db = db_connect();
 
         $builder =  $db->table('payslips')
-                    ->select('id, payroll_date, period_from, period_to, net, gross');
+                    ->select('id, payroll_date, period_from, period_to');
 
         return DataTable::of($builder)
         ->edit('payroll_date', function($row){
@@ -108,12 +182,6 @@ class Payslip extends BaseController
         })
         ->edit('period_to', function($row){
             return date('M d, Y', strtotime($row->period_to));
-        })
-        ->edit('net', function($row){
-            return "₱ ".number_format($row->net);
-        })
-        ->edit('gross', function($row){
-            return "₱ ".number_format($row->gross);
         })
         ->add('action', function($row){
             return '<a href="'.base_url("/payslip/payslip-details/".$row->id).'"><button class="btn btn-primary"><i class="fa fa-eye"></i> View</button></a>';

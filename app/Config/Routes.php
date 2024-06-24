@@ -81,6 +81,11 @@ $routes->group("payslip", ["namespace" => "App\Controllers"], function ($routes)
     $routes->get("/", "Payslip::index");
     $routes->get("payslips-datatable", "Payslip::pasylips_datatable");
     $routes->get("payslip-details/(:num)", "Payslip::payslip_details");
+    $routes->get("payslip-details/(:num)/payslip-pdf", "Payslip::payslip_pdf");
+});
+
+$routes->group("cron", ["namespace" => "App\Controllers"], function ($routes) {
+    $routes->get("update-payroll", "BackgroundController::update_payroll");
 });
 
 /*
