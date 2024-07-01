@@ -34,13 +34,16 @@ class Payslip extends BaseController
         $this->load_view($data, $script, $path);
     }
 
-    public function get_payslip_data(){
+    public function get_payslip_data($id, $date){
         helper('url');
 
-        $id = $this->request->uri->getSegment(3);
+        // $id = $this->request->uri->getSegment(3);
+        
         $db = db_connect();
-        $date_start = '2024-05-16 00:00:00';
-        $date_end = '2024-05-31 00:00:00';
+        $payslip_details = $db->table('payslips')->where(['payroll_date' => $date, 'user_id' => $id])->get()->getFirstRow();
+        
+        $date_start = $payslip_details->period_from;
+        $date_end = $payslip_details->period_to;
 
         $absences = $this->checkWeeks($date_start, $date_end, $id);
         $user_details = $db->table('user_info')->where(['user_id' => $id])->get()->getRow();
@@ -80,6 +83,7 @@ class Payslip extends BaseController
         $data['unpaid_leave_hours'] = $absences;
         $data['holiday_hours'] = 0;
         $data['total_deductions'] = $deductions;
+        $data['late'] = 0;
 
         foreach ($payroll_period as $payroll_detail) {
             $time_start = $payroll_detail->time_start;
@@ -102,8 +106,8 @@ class Payslip extends BaseController
         return $data;
     }
 
-    public function payslip_details(){
-        $data = $this->get_payslip_data();
+    public function payslip_details($id, $date){
+        $data = $this->get_payslip_data($id, $date);
 
         $script['js_scripts'] = array();
         $script['css_scripts'] = array();
@@ -150,12 +154,16 @@ class Payslip extends BaseController
         return $absents;
     }
 
-    public function payslip_pdf(){
+    public function payslip_pdf($id){
+        $db = db_connect();
         $imagePath = base_url().'assets/images/delsanva.jpg';
         $type = pathinfo($imagePath, PATHINFO_EXTENSION);
         $data = file_get_contents($imagePath);
         $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-        $data = $this->get_payslip_data();
+        
+        $payslip_detail = $db->table('payslips')->where('id', $id)->get()->getFirstRow();
+        
+        $data = $this->get_payslip_data($id, $payslip_detail->payroll_date);
         $data['image'] = $base64;
 
         $dompdf = new Dompdf();
@@ -167,11 +175,12 @@ class Payslip extends BaseController
         exit(0);
     }
 
-    public function pasylips_datatable(){
+    public function payslips_datatable(){
         $db = db_connect();
 
-        $builder =  $db->table('payslips')
-                    ->select('id, payroll_date, period_from, period_to');
+        $builder =  $db->table('payslips p')
+                    ->select('p.id, CONCAT(u.first_name, " ", u.last_name) as full_name, payroll_date, period_from, period_to')
+                    ->join('users u', 'u.id = p.user_id');
 
         return DataTable::of($builder)
         ->edit('payroll_date', function($row){
@@ -184,7 +193,8 @@ class Payslip extends BaseController
             return date('M d, Y', strtotime($row->period_to));
         })
         ->add('action', function($row){
-            return '<a href="'.base_url("/payslip/payslip-details/".$row->id).'"><button class="btn btn-primary"><i class="fa fa-eye"></i> View</button></a>';
+            $payroll_date = date('Y-m-d', strtotime($row->payroll_date));
+            return '<a href="'.base_url("/payslip/payslip-details/".$row->id."/".$payroll_date).'"><button class="btn btn-primary"><i class="fa fa-eye"></i> View</button></a>';
         }, 'last')
         ->toJson();
     }

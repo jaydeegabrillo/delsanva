@@ -35,6 +35,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>ID</th>
+                                                            <th>Employee</th>
                                                             <th>Payroll Date</th>
                                                             <th>From</th>
                                                             <th>To</th>
