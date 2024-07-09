@@ -10,6 +10,7 @@ class Payslip extends BaseController
     private $_user;
     protected $session;
     protected $db;
+    protected $holidays;
 
     function __construct()
     {
@@ -17,6 +18,17 @@ class Payslip extends BaseController
         // $this->payslip_model = new \App\Models\PayslipModel;
         $this->_user = $this->session->get();
         $this->db = \Config\Database::connect();
+        $this->holidays = [
+            '01-01', // New Year's Day
+            '04-09', // Araw ng Kagitingan
+            '05-01', // Labor Day
+            '06-12', // Independence Day
+            '08-26', // National Heroes Day
+            '11-01', // All Saints' Day
+            '11-30', // Bonifacio Day
+            '12-25', // Christmas Day
+            '12-30', // Rizal Day
+        ];
     }
 
     public function index()
@@ -34,24 +46,22 @@ class Payslip extends BaseController
         $this->load_view($data, $script, $path);
     }
 
-    public function get_payslip_data($id, $date){
+    public function get_payslip_data($id){
         helper('url');
 
-        // $id = $this->request->uri->getSegment(3);
-        
         $db = db_connect();
-        $payslip_details = $db->table('payslips')->where(['payroll_date' => $date, 'user_id' => $id])->get()->getFirstRow();
-        
-        $date_start = $payslip_details->period_from;
-        $date_end = $payslip_details->period_to;
+        $payslip_details = $db->table('payslips')->where('id', $id)->get()->getFirstRow();
 
+        $date_start = date("Y-m-d", strtotime($payslip_details->period_from));
+        $date_end = date("Y-m-d", strtotime($payslip_details->period_to));
         $absences = $this->checkWeeks($date_start, $date_end, $id);
-        $user_details = $db->table('user_info')->where(['user_id' => $id])->get()->getRow();
+        $user_details = $db->table('user_info')->where(['user_id' => $payslip_details->user_id])->get()->getRow();
         $payroll_period = $db->table('attendance')->join('user_info', 'user_info.user_id = attendance.user_id')->join('overtime', 'overtime.date = attendance.date', 'left')->where(['attendance.user_id' => $id, 'attendance.date >=' => $date_start, 'attendance.date <=' => $date_end])->get()->getResult();
 
         $data['vacation_hours'] = 0;
         $data['sick_hours'] = 0;
         $data['holidays'] = 0;
+        $data['late'] = 0;
 
         $leaves = $db->table('leaves')->where(['user_id' => $id, 'date_from >=' => $date_start, 'date_to <=' => $date_end, 'status' => 1])->get()->getResult();
 
@@ -84,19 +94,60 @@ class Payslip extends BaseController
         $data['holiday_hours'] = 0;
         $data['total_deductions'] = $deductions;
         $data['late'] = 0;
+        $data['undertime'] = 0;
 
         foreach ($payroll_period as $payroll_detail) {
             $time_start = $payroll_detail->time_start;
             $time_end = $payroll_detail->time_end;
 
+            $start_shift = strtotime(date("H:i:s", strtotime($payroll_detail->clock_in)));
+            $end_shift = strtotime(date("H:i:s", strtotime($payroll_detail->clock_out)));
+
+            $late_time = strtotime('09:00:00');
+            if ($start_shift > $late_time) {
+                $data['late'] += round(($start_shift - $late_time) / 60);
+            }
+
+            $time_out = strtotime('18:00:00');
+
+
+            if($end_shift < $time_out){
+                $data['undertime'] += round(($time_out - $end_shift) / 60);
+            }
+
             if($time_start == '' && $time_end == ''){
                 $data['hours'] += 8;
             } else {
+
                 $start_ot = strtotime($time_start);
                 $end_ot = strtotime($time_end);
                 $data['hours'] += round(abs($end_ot - $start_ot) / 3600,2) + 8;
             }
         }
+
+        $late_hours = $data['late'] / 60;
+        $undertime = $data['undertime'] / 60;
+
+        // Convert to hours and minutes
+        $late_hours = floor($data['late'] / 60);
+        $late_remaining_minutes = $data['late'] % 60;
+
+        $undertime_hours = floor($data['undertime'] / 60);
+        $undertime_remaining_minutes = $data['undertime'] % 60;
+
+        $data['late'] = sprintf("%d:%02d", $late_hours, $late_remaining_minutes);
+        $data['undertime'] = sprintf("%d:%02d", $undertime_hours, $undertime_remaining_minutes);
+
+        // Calculate late deductions
+        $late_deductions = ($late_hours * $hourly_rate) + (($late_remaining_minutes / 60) * $hourly_rate);
+
+        // Calculate undertime deductions
+        $undertime_deductions = $undertime_hours * $hourly_rate;
+        $undertime_deductions = ($undertime_hours * $hourly_rate) + (($undertime_remaining_minutes / 60) * $hourly_rate);
+        // Add late deductions to total deductions
+        $data['late_deductions'] = $late_deductions;
+        $data['undertime_deductions'] = $undertime_deductions;
+        $data['total_deductions'] += $late_deductions + $undertime_deductions;
 
         $data['id'] = $id;
         $data['title'] = 'Payslip Details';
@@ -106,8 +157,8 @@ class Payslip extends BaseController
         return $data;
     }
 
-    public function payslip_details($id, $date){
-        $data = $this->get_payslip_data($id, $date);
+    public function payslip_details($id){
+        $data = $this->get_payslip_data($id);
 
         $script['js_scripts'] = array();
         $script['css_scripts'] = array();
@@ -160,10 +211,10 @@ class Payslip extends BaseController
         $type = pathinfo($imagePath, PATHINFO_EXTENSION);
         $data = file_get_contents($imagePath);
         $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-        
+
         $payslip_detail = $db->table('payslips')->where('id', $id)->get()->getFirstRow();
-        
-        $data = $this->get_payslip_data($id, $payslip_detail->payroll_date);
+
+        $data = $this->get_payslip_data($id);
         $data['image'] = $base64;
 
         $dompdf = new Dompdf();

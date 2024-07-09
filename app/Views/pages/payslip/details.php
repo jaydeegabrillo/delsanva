@@ -110,6 +110,16 @@
                                                         <td><?= "₱ " . number_format($unpaid_leaves) ?></td>
                                                     </tr>
                                                     <tr>
+                                                        <td>Late</td>
+                                                        <td><?= $late ?></td>
+                                                        <td><?= "₱ " . number_format($late_deductions) ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Undertime</td>
+                                                        <td><?= $undertime ?></td>
+                                                        <td><?= "₱ " . number_format($undertime_deductions) ?></td>
+                                                    </tr>
+                                                    <tr>
                                                         <td colspan="2"><strong>Total Deductions</strong></td>
                                                         <td><?= "₱ " . number_format($total_deductions ) ?></td>
                                                     </tr>
@@ -120,7 +130,7 @@
                                                 </tbody>
                                                 <tfoot style="border:none">
                                                     <td colspan="3" class="text-right">
-                                                        <a href="<?= base_url("payslip/payslip-details/{$id}/payslip-pdf") ?>" target="_blank"><button class="btn btn-primary">Download PDF</button></a>
+                                                        <a href="<?= base_url("payslip/payslip-pdf/{$id}") ?>" target="_blank"><button class="btn btn-primary">Download PDF</button></a>
                                                     </td>
                                                 </tfoot>
                                             </table>
