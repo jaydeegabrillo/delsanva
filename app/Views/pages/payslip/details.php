@@ -59,7 +59,7 @@
                                                             <td>Holidays</td>
                                                             <td></td>
                                                             <td><?= $holiday_hours ?></td>
-                                                            <td><?= $holidays ?></td>
+                                                            <td><?= "₱ " . number_format($holidays) ?></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Total Hours Worked</td>

@@ -51,17 +51,16 @@ class Payslip extends BaseController
 
         $db = db_connect();
         $payslip_details = $db->table('payslips')->where('id', $id)->get()->getFirstRow();
-
         $date_start = date("Y-m-d", strtotime($payslip_details->period_from));
         $date_end = date("Y-m-d", strtotime($payslip_details->period_to));
         $absences = $this->checkWeeks($date_start, $date_end, $id);
+        $holidays = $this->checkHolidays($date_start, $date_end);
         $user_details = $db->table('user_info')->where(['user_id' => $payslip_details->user_id])->get()->getRow();
         $payroll_period = $db->table('attendance')->join('user_info', 'user_info.user_id = attendance.user_id')->join('overtime', 'overtime.date = attendance.date', 'left')->where(['attendance.user_id' => $id, 'attendance.date >=' => $date_start, 'attendance.date <=' => $date_end])->get()->getResult();
 
+        $data['holiday_hours'] = $holidays;
         $data['vacation_hours'] = 0;
         $data['sick_hours'] = 0;
-        $data['holidays'] = 0;
-        $data['late'] = 0;
 
         $leaves = $db->table('leaves')->where(['user_id' => $id, 'date_from >=' => $date_start, 'date_to <=' => $date_end, 'status' => 1])->get()->getResult();
 
@@ -85,13 +84,13 @@ class Payslip extends BaseController
         $deductions = ($user_details->tax / 2) + ($user_details->sss / 2) + ($user_details->philhealth / 2) + ($user_details->{'pag-ibig'} / 2) + ($absences * $hourly_rate);
 
         $data['hours'] = 0;
+        $data['holidays'] = $holidays * $hourly_rate;
         $data['unpaid_leaves'] = $absences * $hourly_rate;
         $data['vacation_leaves'] = $data['vacation_hours'] * $hourly_rate;
         $data['sick_leaves'] = $data['sick_hours'] * $hourly_rate;
-        $data['total_earnings'] = $earnings + $data['vacation_leaves'] + $data['sick_leaves'];
+        $data['total_earnings'] = $earnings + $data['vacation_leaves'] + $data['sick_leaves'] + $data['holidays'];
         $data['net_pay'] = $data['total_earnings'] - $deductions;
         $data['unpaid_leave_hours'] = $absences;
-        $data['holiday_hours'] = 0;
         $data['total_deductions'] = $deductions;
         $data['late'] = 0;
         $data['undertime'] = 0;
@@ -168,6 +167,23 @@ class Payslip extends BaseController
         $path = [ 'pages/payslip/details', ];
 
         $this->load_view($data, $script, $path);
+    }
+
+    public function checkHolidays($start_date, $end_date){
+        $holiday_ctr = 0;
+        while ($start_date <= $end_date) {
+            $formatted_date = date('m-d', strtotime($start_date));
+
+            if (in_array($formatted_date, $this->holidays)) {
+                // Assuming 8 hours per holiday
+                $holiday_ctr += 8;
+            }
+
+            // Move to the next day
+            $start_date = strtotime('+1 day', strtotime($start_date));
+        }
+
+        return $holiday_ctr;
     }
 
     public function checkWeeks($start_date, $end_date, $id){
