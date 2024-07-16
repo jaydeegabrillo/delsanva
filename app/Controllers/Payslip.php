@@ -180,7 +180,7 @@ class Payslip extends BaseController
             }
 
             // Move to the next day
-            $start_date = strtotime('+1 day', strtotime($start_date));
+            $start_date = date('Y-m-d', strtotime('+1 day', strtotime($start_date)));
         }
 
         return $holiday_ctr;
