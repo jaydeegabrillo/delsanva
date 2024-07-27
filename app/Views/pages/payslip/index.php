@@ -23,7 +23,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Payslip</h3>
                                 <div class="text-right">
-                                    <!-- <button type="button" class="btn btn-success" name="button" data-toggle="modal" data-target="#add_payslip_modal"><i class="fa fa-plus"></i> Add Timesheet</button> -->
+                                    <button type="button" class="btn btn-success release_payslip" name="button"><i class="fa-solid fa-money-bill"></i> Release Payslip</button>
                                 </div>
                             </div>
                             <div class="card-body">

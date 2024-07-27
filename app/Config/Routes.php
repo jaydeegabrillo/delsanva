@@ -82,6 +82,7 @@ $routes->group("payslip", ["namespace" => "App\Controllers"], function ($routes)
     $routes->get("payslips-datatable", "Payslip::payslips_datatable");
     $routes->get("payslip-details/(:num)/(:any)", "Payslip::payslip_details/$1/$2");
     $routes->get("payslip-pdf/(:num)", "Payslip::payslip_pdf/$1");
+    $routes->get("release-payslips", "Payslip::release_payslips");
 });
 
 $routes->group("cron", ["namespace" => "App\Controllers"], function ($routes) {
