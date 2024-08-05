@@ -31,20 +31,21 @@ $(document).ready(function(){
       callback: function (result) {
         if (result) {
           $.ajax({
-            type: 'post',
-            url: '/payslips/release_payslips',
-            data: data,
+            type: 'get',
+            url: '/payslip/release-payslips',
             success: function (res) {
-              if (res) {
-                Swal.fire('Success', 'Payslips have been released!', 'success');
-              } else {
-                Swal.fire('Error', 'There was an error on the website please try again later or contact administrator.', 'error');
-              }
+              console.log("Res", res);
+              // if (res) {
+              //   Swal.fire('Success', 'Payslips have been released!', 'success');
+              // } else {
+              //   Swal.fire('Error', 'There was an error on the website please try again later or contact administrator.', 'error');
+              // }
             },
             error: function (err) {
               console.log(err);
             }
           });
+          // Swal.fire('success', '', 'success')
         }
       }
     });
